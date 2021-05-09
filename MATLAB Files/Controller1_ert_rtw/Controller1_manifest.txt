@@ -1,0 +1,11 @@
+This file is the manifest for the generated code from model 'Controller1'.
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\Controller1.cpp
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\Controller1_data.cpp
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\ert_main.cpp
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\Controller1.h
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\rtwtypes.h
+C:\Program Files\MATLAB\R2017a\simulink\include\rtw_continuous.h
+C:\Program Files\MATLAB\R2017a\simulink\include\rtw_solver.h
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\defines.txt
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\html
+C:\Users\armen\Documents\MATLAB\starshot\Controller1_ert_rtw\Controller1_manifest.txt
