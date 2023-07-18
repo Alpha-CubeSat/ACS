@@ -64,7 +64,7 @@ n=1000;
 
 %% Controller Design
 starshot.controller.i=20*pi/180;                                                    % Orbit inclination
-starshot.controller.a=500;                                                          % Satellite altitude
+starshot.controller.a=altitude;                                                          % Satellite altitude
 starshot.controller.T=2*pi*sqrt((6371+starshot.controller.a)^3/398600);                % Orbital period
 starshot.controller.tp=1.8*starshot.controller.T;                                     %   Peak Time
 starshot.controller.ts=2*starshot.controller.T;                                     %   Settling Time
