@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MF0 version="1.1" packageUris="http://schema.mathworks.com/mf0/SlsaMaskTree/R2020a">
+  <slsa.mm.maskTree.MaskTree type="slsa.mm.maskTree.MaskTree" uuid="0b1eae14-bb3e-40da-b846-c8406f079812">
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="66495d56-919f-48ad-bff1-3696b0a61ad7">
+      <childrenIds>starshot_sim:1435</childrenIds>
+      <childrenIds>starshot_sim:868</childrenIds>
+      <id>root</id>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="72db71a1-f068-4880-aa9b-4a0da65e4e3c">
+      <blockPath>starshot_sim/Kane Damper_controller/Normalization</blockPath>
+      <id>starshot_sim:1435</id>
+      <masks type="slsa.mm.maskTree.Mask" uuid="2605a243-3008-46e4-92e4-dd93b9d82516">
+        <cachedVariables type="slsa.mm.maskTree.Variable" uuid="38f54dab-3cac-41d3-a73f-f27e1cc1c244">
+          <name>dtInfo</name>
+          <value>AAFJTQAAAAAOAAAA4AMAAAYAAAAIAAAAAgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAFAAQAFQAAAAEAAADnAAAAcHJvZE91dHB1dE1vZGUAAAAAAAAAcHJvZE91dHB1dFdvcmRMZW5ndGgAcHJvZE91dHB1dEZyYWNMZW5ndGgAYWNjdW1Nb2RlAAAAAAAAAAAAAAAAYWNjdW1Xb3JkTGVuZ3RoAAAAAAAAYWNjdW1GcmFjTGVuZ3RoAAAAAAAAb3V0cHV0TW9kZQAAAAAAAAAAAAAAb3V0cHV0V29yZExlbmd0aAAAAAAAb3V0cHV0RnJhY0xlbmd0aAAAAAAAcm91bmRpbmdNb2RlAAAAAAAAAAAAb3ZlcmZsb3dNb2RlAAAAAAAAAAAAAA4AAAA4AAAABgAAAAgAAAAGAAAAAAAAAAUAAAAIAAAAAQAAAAEAAAABAAAAAAAAAAkAAAAIAAAAAAAAAAAAAEAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAAAAAAAADgAAADgAAAAGAAAACAAAAAYAAAAAAAAABQAAAAgAAAABAAAAAQAAAAEAAAAAAAAACQAAAAgAAAAAAAAAAAAAAA4AAAA4AAAABgAAAAgAAAAGAAAAAAAAAAUAAAAIAAAAAQAAAAEAAAABAAAAAAAAAAkAAAAIAAAAAAAAAAAACEAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAAAAAAAADgAAADgAAAAGAAAACAAAAAYAAAAAAAAABQAAAAgAAAABAAAAAQAAAAEAAAAAAAAACQAAAAgAAAAAAAAAAAAAAA4AAAA4AAAABgAAAAgAAAAGAAAAAAAAAAUAAAAIAAAAAQAAAAEAAAABAAAAAAAAAAkAAAAIAAAAAAAAAAAACEAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAAAAAAAADgAAADgAAAAGAAAACAAAAAYAAAAAAAAABQAAAAgAAAABAAAAAQAAAAEAAAAAAAAACQAAAAgAAAAAAAAAAAAAAA4AAAA4AAAABgAAAAgAAAAGAAAAAAAAAAUAAAAIAAAAAQAAAAEAAAABAAAAAAAAAAkAAAAIAAAAAAAAAAAACEAOAAAAOAAAAAYAAAAIAAAABgAAAAAAAAAFAAAACAAAAAEAAAABAAAAAQAAAAAAAAAJAAAACAAAAAAAAAAAAPA/</value>
+        </cachedVariables>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="7bedeffb-8ec9-4b9f-900e-af37a9875b62">
+          <evaluate>true</evaluate>
+          <expression>2</expression>
+          <name>NormType</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="1eed29fb-3d11-4c93-b867-bc76053a1c38">
+          <evaluate>true</evaluate>
+          <expression>1e-10</expression>
+          <isTunable>true</isTunable>
+          <name>Bias</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="4fbb53b2-907e-4309-8c9b-69a798443d79">
+          <evaluate>true</evaluate>
+          <expression>1</expression>
+          <name>NormOver</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="3e309989-747a-4740-ac34-32bb834f8597">
+          <evaluate>true</evaluate>
+          <expression>1</expression>
+          <name>Dimension</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="7473f8e4-8ab0-45d8-8912-508bc21e6da6">
+          <evaluate>true</evaluate>
+          <expression>3</expression>
+          <name>roundingMode</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="ef090ede-86a3-43ac-a016-01cb5e06cdae">
+          <evaluate>true</evaluate>
+          <expression>0</expression>
+          <name>overflowMode</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="86ab320c-2199-4827-949d-e138e656012d">
+          <evaluate>true</evaluate>
+          <expression>1</expression>
+          <name>prodOutputMode</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="6f3d7ee4-a63c-4092-a9f6-0f89c416e937">
+          <evaluate>true</evaluate>
+          <expression>32</expression>
+          <name>prodOutputWordLength</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="41228480-4843-4fbc-aa7b-543e53f0b7e5">
+          <evaluate>true</evaluate>
+          <expression>32</expression>
+          <name>prodOutputFracLength</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="63d74293-5217-49f5-b786-d1d94acdc9bf">
+          <expression>Inherit: Same as input</expression>
+          <name>prodOutputDataTypeStr</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="33b5f0a5-8d11-4de6-bd68-ea0fbe19acbd">
+          <expression>Inherit: Same as input</expression>
+          <name>prodOutputLastDataTypeStr</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="f264d7ac-39e8-43bd-bc79-1a8ff7894341">
+          <evaluate>true</evaluate>
+          <expression>1</expression>
+          <name>accumMode</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="0b980d89-e17f-4864-bd99-bd1e411a7d98">
+          <evaluate>true</evaluate>
+          <expression>32</expression>
+          <name>accumWordLength</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="20876d71-7012-4801-917f-50492dc45f01">
+          <evaluate>true</evaluate>
+          <expression>30</expression>
+          <name>accumFracLength</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="d17a9018-5559-4896-af35-e8c71877402d">
+          <expression>Inherit: Same as product output</expression>
+          <name>accumDataTypeStr</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="f784ca01-6fbf-4be1-9f14-3f6813b76646">
+          <expression>Inherit: Same as product output</expression>
+          <name>accumLastDataTypeStr</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="704e9d46-4c56-4652-bcd9-afc937eccd06">
+          <evaluate>true</evaluate>
+          <expression>2</expression>
+          <name>outputMode</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="121bc014-a6ea-41e0-9a84-0623b01ea446">
+          <evaluate>true</evaluate>
+          <expression>32</expression>
+          <name>outputWordLength</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="2bed8245-baab-4401-8847-ca54f9544700">
+          <evaluate>true</evaluate>
+          <expression>32</expression>
+          <name>outputFracLength</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="501f6ca5-ed0a-4fac-9cf2-169010ddf998">
+          <expression>Inherit: Same as product output</expression>
+          <name>outputDataTypeStr</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="fbe31c12-6812-4689-bc89-6b55b77eea41">
+          <evaluate>true</evaluate>
+          <expression>[]</expression>
+          <name>outputMin</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="13084f76-386f-42ed-b724-7efc20236382">
+          <evaluate>true</evaluate>
+          <expression>[]</expression>
+          <name>outputMax</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="0d97d1f3-fc59-416a-a889-a0f5a70b97f5">
+          <expression>Inherit: Same as product output</expression>
+          <name>outputLastDataTypeStr</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="d8ac7fb1-7291-4c84-9ae0-288baab071f4">
+          <evaluate>true</evaluate>
+          <expression>0</expression>
+          <name>LockScale</name>
+        </dialogParameters>
+        <initializationCode>dtRows = dspblkGetTwoNormDTRowInfo();
+dtInfo = dspGetUDTFixptDataTypeInfo(gcbh, dtRows, true);</initializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="7512a42e-5953-4942-a67d-d92e256bd1b1">
+      <blockPath>starshot_sim/   /Quaternions to Rotation Angles</blockPath>
+      <childrenIds>starshot_sim:868:13</childrenIds>
+      <childrenIds>starshot_sim:868:14</childrenIds>
+      <id>starshot_sim:868</id>
+      <masks type="slsa.mm.maskTree.Mask" uuid="1931217d-e775-4b74-9ca7-c797dc4e53c2">
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="1e0b972c-3f39-4e66-8ac8-0281b57b2d87">
+          <evaluate>true</evaluate>
+          <expression>1</expression>
+          <name>rotationOrder</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="c4e6202a-3b39-4787-95b1-94c0379138d5">
+          <evaluate>true</evaluate>
+          <expression>aMode</expression>
+          <name>aMode</name>
+        </dialogParameters>
+        <initializationCode>if aerosharedtest(gcb)
+    ports=aerosharedicon(&apos;sharedquat2ang&apos;);
+else
+    ports=sharedautoicon(&apos;sharedquat2ang&apos;);
+end</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>root</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="b9e56f47-acc1-465f-a790-426928834f2e">
+      <blockPath>starshot_sim/   /Quaternions to Rotation Angles/Quaternion Normalize</blockPath>
+      <childrenIds>starshot_sim:868:13:384</childrenIds>
+      <id>starshot_sim:868:13</id>
+      <masks type="slsa.mm.maskTree.Mask" uuid="d7da73df-5896-4460-a57e-22f2f674130b">
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="6e3cd6e4-5dbf-4828-92c0-dd74728111c2">
+          <evaluate>true</evaluate>
+          <expression>aMode</expression>
+          <name>aMode</name>
+          <referencedVariables type="slsa.mm.maskTree.Variable" uuid="5a33fdae-d726-4014-b966-9e088e38c56d">
+            <name>aMode</name>
+            <value></value>
+            <workspace>starshot_sim:868</workspace>
+          </referencedVariables>
+        </dialogParameters>
+        <initializationCode>if aerosharedtest(gcb)
+    aerosharedicon(&apos;shared&apos;);
+else
+    sharedautoicon(&apos;shared&apos;);
+end</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>starshot_sim:868</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="f88de833-5d5f-4f58-83d2-4406c65d6840">
+      <blockPath>starshot_sim/   /Quaternions to Rotation Angles/Quaternion Normalize/Quaternion Modulus</blockPath>
+      <childrenIds>starshot_sim:868:13:384:385</childrenIds>
+      <id>starshot_sim:868:13:384</id>
+      <masks type="slsa.mm.maskTree.Mask" uuid="c2dfd383-ff1d-4983-a7f6-b861ba0eed59">
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="91d9bb80-f221-4f0e-b375-f99003ae0941">
+          <evaluate>true</evaluate>
+          <expression>aMode</expression>
+          <name>aMode</name>
+          <referencedVariables type="slsa.mm.maskTree.Variable" uuid="7b08b031-b9d6-42a3-b743-324d04630d64">
+            <name>aMode</name>
+            <value></value>
+            <workspace>starshot_sim:868:13</workspace>
+          </referencedVariables>
+        </dialogParameters>
+        <initializationCode>if aerosharedtest(gcb)
+    aerosharedicon(&apos;shared&apos;);
+else
+    sharedautoicon(&apos;shared&apos;);
+end</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>starshot_sim:868:13</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="13295fd1-e493-4d42-add2-6bd2b6f1de4e">
+      <blockPath>starshot_sim/   /Quaternions to Rotation Angles/Quaternion Normalize/Quaternion Modulus/Quaternion Norm</blockPath>
+      <id>starshot_sim:868:13:384:385</id>
+      <masks type="slsa.mm.maskTree.Mask" uuid="e4bb4e3b-feb3-47ca-8fb9-d06ca1650f32">
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="31f6cc13-eb83-4632-a5d3-4e94012b0a5d">
+          <evaluate>true</evaluate>
+          <expression>aMode</expression>
+          <name>aMode</name>
+          <referencedVariables type="slsa.mm.maskTree.Variable" uuid="45dfd2b7-63b4-48c1-8084-c9641dd39bbd">
+            <name>aMode</name>
+            <value></value>
+            <workspace>starshot_sim:868:13:384</workspace>
+          </referencedVariables>
+        </dialogParameters>
+        <initializationCode>if aerosharedtest(gcb)
+    aerosharedicon(&apos;shared&apos;);
+else
+    sharedautoicon(&apos;shared&apos;);
+end</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>starshot_sim:868:13:384</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="f2d619f5-8a13-45cc-af79-abe00ae04e53">
+      <blockPath>starshot_sim/   /Quaternions to Rotation Angles/Angle Calculation</blockPath>
+      <childrenIds>starshot_sim:868:14:46</childrenIds>
+      <id>starshot_sim:868:14</id>
+      <masks type="slsa.mm.maskTree.Mask" uuid="f9f08719-2b90-4156-81e2-da912d6afa7f">
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="0effba4a-c1b3-411c-98b0-1c30324fb708">
+          <expression>ZYX</expression>
+          <isTunable>true</isTunable>
+          <name>rot</name>
+        </dialogParameters>
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="45644c87-c1cd-4a53-8347-cb38c1029990">
+          <evaluate>true</evaluate>
+          <expression>aMode</expression>
+          <name>aMode</name>
+          <referencedVariables type="slsa.mm.maskTree.Variable" uuid="7cc83f2a-f1e5-4ea5-8404-e8c55a6c8e9a">
+            <name>aMode</name>
+            <value></value>
+            <workspace>starshot_sim:868</workspace>
+          </referencedVariables>
+        </dialogParameters>
+        <initializationCode>if aerosharedtest(gcb) &amp;&amp; builtin(&apos;license&apos;,&apos;test&apos;,&apos;Aerospace_Blockset&apos;)
+    aerosharedicon(&apos;shared&apos;);
+else
+    sharedautoicon(&apos;shared&apos;);
+end</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>starshot_sim:868</parentId>
+    </maskedBlocks>
+    <maskedBlocks type="slsa.mm.maskTree.MaskedBlock" uuid="43aaa81e-420f-4364-a78d-733fcac4e9f7">
+      <blockPath>starshot_sim/   /Quaternions to Rotation Angles/Angle Calculation/Protect asincos input</blockPath>
+      <id>starshot_sim:868:14:46</id>
+      <masks type="slsa.mm.maskTree.Mask" uuid="726caf27-a9dd-4901-9e6c-5ad0c27ceef4">
+        <dialogParameters type="slsa.mm.maskTree.DialogParameterInfo" uuid="694828bb-24e9-42fe-9dcf-bf5ea276ae80">
+          <evaluate>true</evaluate>
+          <expression>aMode</expression>
+          <name>aMode</name>
+          <referencedVariables type="slsa.mm.maskTree.Variable" uuid="756a2b66-83d5-424a-85a4-f0ad06b80a04">
+            <name>aMode</name>
+            <value></value>
+            <workspace>starshot_sim:868:14</workspace>
+          </referencedVariables>
+        </dialogParameters>
+        <initializationCode>if aerosharedtest(gcb) &amp;&amp; builtin(&apos;license&apos;,&apos;test&apos;,&apos;Aerospace_Blockset&apos;)
+    aerosharedicon(&apos;shared&apos;);
+else
+    sharedautoicon(&apos;shared&apos;);
+end</initializationCode>
+        <skipInitializationCode>true</skipInitializationCode>
+      </masks>
+      <parentId>starshot_sim:868:14</parentId>
+    </maskedBlocks>
+    <flags type="slsa.mm.maskTree.MaskTreeFlags" uuid="d48db9c4-5fbf-4233-9729-0c717d4e08bf"/>
+  </slsa.mm.maskTree.MaskTree>
+</MF0>

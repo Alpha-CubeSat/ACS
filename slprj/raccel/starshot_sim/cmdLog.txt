@@ -1,0 +1,22 @@
+	---> Registering atexit function
+	---> Initialize gblExecutionInfo
+	---> i18n_init
+	---> Parse Arguments
+The argument '-tgtconn_server_info_file' passed to rtiostream_tcpip is not valid and will be ignored.
+The argument 'C:\Users\Deemo\AppData\Local\Temp\tgtconnp324cc58d_db60_4d7c_9795_06ebe4dad894.info' passed to rtiostream_tcpip is not valid and will be ignored.
+The argument '-tgtconn_port' passed to rtiostream_tcpip is not valid and will be ignored.
+The argument '0' passed to rtiostream_tcpip is not valid and will be ignored.
+	---> SetupExecutionServices
+	---> sdiInitializeForHostBasedTarget
+	---> Initialize the model
+	---> rsimLoadOptionsFromMATFile
+	---> ssRunSimulation
+Warning: Solver is encountering difficulty in simulating model 'starshot_sim' at time 0.001 . It will continue to simulate with warnings. Check the model for errors.
+Warning: Solver was unable to reduce the step size without violating minimum step size of 0.001 for 1 consecutive times at time 0.001.  Solver will continue simulation with the step size restricted to 0.001 and using an effective relative error tolerance of 0.000270075, which is greater than the specified relative error tolerance of 1E-06. This usually may be caused by the high stiffness of the system. Please check the system or increase the solver <a href="matlab:configset.internal.open('_E_S_O_','MaxConsecutiveMinStep');">Number of consecutive min steps</a> violation parameter.
+	---> slsaFreeOPModelData
+	---> TgtConnTerm
+	---> rtwISigstreamManagerDestroyInstance
+	---> rtwLoggingIntervalDestroyInstance
+	---> rt_RapidReleaseDiagLoggerDB
+	---> rt_RapidFreeGbls
+	---> rtDestroyRevalMgr
