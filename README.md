@@ -1,7 +1,7 @@
 # ACS
 ## Attitude Control System of Alpha CubeSat
 
-### Branchs
+### Branches
 `main` has the most updated version of the raw ACS dev files
 
 `with-ekf` is a feature branch with Sam developed Extended Kalman Filter for IMU noises
