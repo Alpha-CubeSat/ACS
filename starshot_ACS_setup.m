@@ -4,11 +4,9 @@ clear all
 %% Simulink model IC & cmd
 %diary('Diary_partial_19th_part.txt')
 PLOT=1;
-altitude=200;% km
+altitude=400;% km
 R=6371+altitude;% km
 Omega=0;
-omega=0;
-i=10*pi/180;
 vc=sqrt(398600/(R))*1000;
 ISS_inclination = deg2rad(51.6);
 
@@ -27,8 +25,8 @@ discretization_c=linspace(0.0001,0.1,50);
 discretization_Id=linspace(0.0001,0.1,50);
 starshot.IC.eul=pi/6*[1 2 3];%pi/18*[3 6 4.5];%-1+2*rand(1,3);%pi/6*[1 1 1];[-27.7875      39.0433     -28.1572]*pi/180;%
 
-starshot.IC.w=[0.6 -0.5 0.7];%[0 0 1];%[0.6 -0.5 0.7];%[0.2 0.3 0.5];%-2+4*rand(1,3);%N/10*[1 1 1];[-2.1428     +2.5648      -3.2926];%
-starshot.IC.massproperties.m=.839;
+starshot.IC.w=[0 0 1];%[0.6 -0.5 0.7];%[0.2 0.3 0.5];%-2+4*rand(1,3);%N/10*[1 1 1];[-2.1428     +2.5648      -3.2926];%
+starshot.IC.massproperties.m=1.3;
 starshot.IC.massproperties.Ixx=1957614.50869e-9;
 starshot.IC.massproperties.Ixy=-58366.32382e-9;
 starshot.IC.massproperties.Ixz=2276.38093e-9;
@@ -63,7 +61,7 @@ mu_0=4*pi*(10^-7);
 n=1000;
 
 %% Controller Design
-starshot.controller.i=20*pi/180;                                                    % Orbit inclination
+starshot.controller.i=ISS_inclination;                                                    % Orbit inclination
 starshot.controller.a=altitude;                                                          % Satellite altitude
 starshot.controller.T=2*pi*sqrt((6371+starshot.controller.a)^3/398600);                % Orbital period
 starshot.controller.tp=1.8*starshot.controller.T;                                     %   Peak Time
@@ -81,6 +79,8 @@ if starshot.controller.ang_c<0
 end
 starshot.controller.Td=inv(imag(starshot.controller.s1)/tan(starshot.controller.ang_c)-real(starshot.controller.s1));
 starshot.controller.Kpd=abs(starshot.controller.s1^2/(starshot.controller.s1+inv(starshot.controller.Td)));
+
+
 starshot.controller.Kd=starshot.controller.Kpd;
 starshot.controller.Kp=starshot.controller.Kpd/starshot.controller.Td;
 
@@ -107,15 +107,17 @@ starshot.aerodrag.xag=0.01;                                                     
 starshot.aerodrag.Ta=0.5*starshot.aerodrag.cd*starshot.aerodrag.p*starshot.aerodrag.A*starshot.aerodrag.V^2*starshot.aerodrag.xag;
 %% Hardware
 
-starshot.magnetorq.V=3;                                     % Volt
-%starshot.magnetorq.e=.04;%0.33;                            % Max current
+starshot.magnetorq.V=4;                                     % Volt
+starshot.magnetorq.e=0.250;%0.33;                            % Max current
 %(Ampere)
-starshot.magnetorq.k=1;                                    % Gain
-starshot.magnetorq.A=0.07979645340118074;                  % Surface Area
+starshot.magnetorq.k=13.5;                                    % Gain
+starshot.magnetorq.A=4e-5;                  % Surface Area
 starshot.magnetorq.n=500;                                  % Wire Turns (supposed)
-starshot.magnetorq.m_max_x=0.02;%starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
-starshot.magnetorq.m_max_y=0.02;%starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
-starshot.magnetorq.m_max_z=0.02;%starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
+
+starshot.magnetorq.m_max_x=starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
+starshot.magnetorq.m_max_y=starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
+starshot.magnetorq.m_max_z=starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
+
 starshot.magnetorq.i_max_x=starshot.magnetorq.m_max_x/(starshot.magnetorq.A*starshot.magnetorq.n);
 starshot.magnetorq.i_max_y=starshot.magnetorq.m_max_y/(starshot.magnetorq.A*starshot.magnetorq.n);
 starshot.magnetorq.i_max_z=starshot.magnetorq.m_max_z/(starshot.magnetorq.A*starshot.magnetorq.n);
