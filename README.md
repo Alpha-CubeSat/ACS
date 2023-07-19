@@ -1,5 +1,5 @@
 # ACS
-Attitude Control System of Alpha CubeSat
+## Attitude Control System of Alpha CubeSat
 
 ### Branchs
 `main` has the most updated version of the raw ACS dev files
