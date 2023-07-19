@@ -7,6 +7,14 @@ Attitude Control System of Alpha CubeSat
 The `LEGACY` folder contains all the previous MATLAB/SIMULINK files for storage purposes
 And the production/development files are in the root dir of this repo
 
+### Blocks
+Davide's original code does not separate the **plant** and the **starshot controller**. 
+In order to adapt the code to our microcontroller application. We separated his code to the previously mentioned two blocks.
+**Plants**
+Plantv5: a modified version of the original version, with different math blocks. (less power consumption?)
+Plant_OG: a direct migration of Davide's code.
+
+
 
 ### NOTES 
 
@@ -14,5 +22,5 @@ And the production/development files are in the root dir of this repo
 
 In order to use discrete-time derivatives, we shall use a fix-step setting instead of a variable-step.
 
-Some, if not all the `starshotsimv5.slx` seem to scale Kd in with `Izp` which makes the input Kd ~500 times smaller
+Some, if not all, the `StarshotACS` blocks seem to scale Kd in with `Izp`, making the input Kd ~500 times smaller.
 
