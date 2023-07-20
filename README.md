@@ -9,7 +9,11 @@
 ### File Structure
 
 The `LEGACY` folder contains all the previous MATLAB/SIMULINK files for storage purposes
+
 And the production/development files are in the root dir of this repo
+
+You can also find the auto-coded C++ code in the root, which is generated for Teensy 3.5 (ARM-Cortex M)
+
 
 ### Blocks
 Davide's original code does not separate the **plant** and the **starshot controller**. 
@@ -18,6 +22,7 @@ In order to adapt the code to our microcontroller application. We separated his 
 
 **Plants**
 Plantv5: a modified version of the original version, with different math blocks. (less power consumption?)
+
 Plant_OG: a direct migration of Davide's code.
 
 
