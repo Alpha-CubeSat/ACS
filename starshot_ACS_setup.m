@@ -11,6 +11,8 @@ M_Earth=5.972e24;
 R_Earth=6.378e6;
 B0=3.12e-5;
 mu_0=4*pi*(10^-7);
+dutyclc = 0.5; % [0,1] the dutycycle of the pointing controller
+dutyT = 9*60; %sec the period of the pointing controller dutyclc
 
 
 starshot.IC.x=R*1000;
@@ -38,7 +40,7 @@ starshot.IC.massproperties.Izz=2046972.65884e-9;
 starshot.IC.massproperties.I=[starshot.IC.massproperties.Ixx,starshot.IC.massproperties.Ixy,starshot.IC.massproperties.Ixz;
 starshot.IC.massproperties.Iyx,starshot.IC.massproperties.Iyy,starshot.IC.massproperties.Iyz;
 starshot.IC.massproperties.Izx,starshot.IC.massproperties.Izy,starshot.IC.massproperties.Izz];
-[starshot.IC.massproperties.PI starshot.IC.massproperties.Ip]=eig(starshot.IC.massproperties.I);
+[starshot.IC.massproperties.PI, starshot.IC.massproperties.Ip]=eig(starshot.IC.massproperties.I);
 starshot.IC.massproperties.Ixp=starshot.IC.massproperties.Ip(1,1);
 starshot.IC.massproperties.Iyp=starshot.IC.massproperties.Ip(2,2);
 starshot.IC.massproperties.Izp=starshot.IC.massproperties.Ip(3,3);
@@ -48,6 +50,10 @@ qmatlab=eul2quat(starshot.IC.eul);
 q0=[qmatlab(2:4),qmatlab(1)]';
 
 %% Controller Design
+%%%%%%%%%%%%%%DUTY CYCLE%%%%%%%%%%%%
+starshot.controller.dutyclc = dutyclc;
+starshot.controller.dutyT = dutyT;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 starshot.controller.i=ISS_inclination;                                                    % Orbit inclination
 starshot.controller.a=altitude;                                                          % Satellite altitude
 starshot.controller.T=2*pi*sqrt((6371+starshot.controller.a)^3/398600);                % Orbital period
@@ -58,24 +64,23 @@ starshot.controller.zeta=sqrt(starshot.controller.c^2/(1+starshot.controller.c^2
 starshot.controller.omegan=4.4/(starshot.controller.ts*starshot.controller.zeta);   %   Natural frequency
 starshot.controller.Ims=pi/starshot.controller.tp;
 starshot.controller.Res=4.4/starshot.controller.ts;
-starshot.controller.s1=-starshot.controller.Res+j*starshot.controller.Ims;
+starshot.controller.s1=-starshot.controller.Res+1i*starshot.controller.Ims;
 starshot.controller.ang_p=angle(1/starshot.controller.s1^2);
 starshot.controller.ang_c=-pi-starshot.controller.ang_p;
 
 if starshot.controller.ang_c<0
     starshot.controller.ang_c=2*pi+starshot.controller.ang_c;
 end
-
+%Pointing Gains
 starshot.controller.Td=inv(imag(starshot.controller.s1)/tan(starshot.controller.ang_c)-real(starshot.controller.s1));
 starshot.controller.Kpd=abs(starshot.controller.s1^2/(starshot.controller.s1+inv(starshot.controller.Td)));
 
 starshot.controller.Kd=starshot.controller.Kpd;
-starshot.controller.Kp=starshot.controller.Kpd/starshot.controller.Td;
-
-
-% Kane Damper
+starshot.controller.Kp=starshot.IC.massproperties.Izp*starshot.controller.Kpd/starshot.controller.Td;
 starshot.cmd.Kp=[starshot.IC.massproperties.Ip]*starshot.controller.Kp;
 starshot.cmd.Kd=[starshot.IC.massproperties.Ip]*starshot.controller.Kd;
+
+% Kane Damper Vars
 starshot.cmd.Id=0.0021;
 starshot.cmd.invId=inv(starshot.cmd.Id);
 starshot.cmd.c=0.004;
@@ -94,15 +99,77 @@ starshot.aerodrag.Ta=0.5*starshot.aerodrag.cd*starshot.aerodrag.p*starshot.aerod
 %% Hardware
 
 starshot.magnetorq.V=4;                                    % Volt
-starshot.magnetorq.e=0.250;                                % Max current (Ampere)
+starshot.magnetorq.i_max=0.250;                            % Max current (Ampere)
 starshot.magnetorq.k=13.5;                                 % Gain
 starshot.magnetorq.A=4e-5;                                 % Surface Area
 starshot.magnetorq.n=500;                                  % Wire Turns (supposed)
 
-starshot.magnetorq.m_max_x=starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
-starshot.magnetorq.m_max_y=starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
-starshot.magnetorq.m_max_z=starshot.magnetorq.k*starshot.magnetorq.e*starshot.magnetorq.A*starshot.magnetorq.n;
+%% Simulink Auto-Code Parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The ones being defined as Simulink.Parameter
+% need to replace the original variable 
+% (aka, replacing starshot.controller.Kd by kd in Simulink) 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%Hardware Paramters%%%%%%%%%%%%%%%%%%%%%%%
+%i_max
+i_max  = Simulink.Parameter;
+i_max.Value = starshot.magnetorq.i_max;
+i_max.CoderInfo.StorageClass = 'ExportedGlobal';
+i_max.CoderInfo.Alias = 'i_max';
+i_max.Description = "Max Current for each magnetorquer";
+i_max.DataType = 'double';
+assignin('base', "i_max", i_max);
+%k
+k  = Simulink.Parameter;
+k.Value = starshot.magnetorq.k;
+k.CoderInfo.StorageClass = 'ExportedGlobal';
+k.CoderInfo.Alias = 'k';
+k.Description = "Gain for magnetorquer";
+k.DataType = 'double';
+assignin('base', "k", k);
+%A
+A  = Simulink.Parameter;
+A.Value = starshot.magnetorq.A;
+A.CoderInfo.StorageClass = 'ExportedGlobal';
+A.CoderInfo.Alias = 'A';
+A.Description = "Area For magnetorquer";
+A.DataType = 'double';
+assignin('base', "A", A);
+%A
+A  = Simulink.Parameter;
+A.Value = starshot.magnetorq.A;
+A.CoderInfo.StorageClass = 'ExportedGlobal';
+A.CoderInfo.Alias = 'A';
+A.Description = "Surface Area For magnetorquer";
+A.DataType = 'double';
+assignin('base', "A", A);
+%n
+n  = Simulink.Parameter;
+n.Value = starshot.magnetorq.n;
+n.CoderInfo.StorageClass = 'ExportedGlobal';
+n.CoderInfo.Alias = 'n';
+n.Description = "Wire Turn For magnetorquer";
+n.DataType = 'double';
+assignin('base', "n", n);
+%%%%%%%%%%%%%%%%%Controller Parameters%%%%%%%%%%%%%%%
+%Kd
+Kd  = Simulink.Parameter;
+Kd.Value = starshot.controller.Kd ;
+Kd.CoderInfo.StorageClass = 'ExportedGlobal';
+Kd.CoderInfo.Alias = 'Kd';
+Kd.Description = "Kd for the pointing";
+Kd.DataType = 'double';
+assignin('base', "Kd", Kd);
+%Kp
+Kp  = Simulink.Parameter;
+Kp.Value = starshot.controller.Kp ;
+Kp.CoderInfo.StorageClass = 'ExportedGlobal';
+Kp.CoderInfo.Alias = 'Kp';
+Kp.Description = "Kp for the pointing";
+Kp.DataType = 'double';
+assignin('base', "Kp", Kp);
 
-starshot.magnetorq.i_max_x=starshot.magnetorq.m_max_x/(starshot.magnetorq.A*starshot.magnetorq.n);
-starshot.magnetorq.i_max_y=starshot.magnetorq.m_max_y/(starshot.magnetorq.A*starshot.magnetorq.n);
-starshot.magnetorq.i_max_z=starshot.magnetorq.m_max_z/(starshot.magnetorq.A*starshot.magnetorq.n);
+
+
+
+
