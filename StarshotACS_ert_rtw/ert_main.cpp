@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'StarshotACS'.
 //
-// Model version                  : 13.4
+// Model version                  : 13.5
 // Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
-// C/C++ source code generated on : Thu Jul 20 17:59:15 2023
+// C/C++ source code generated on : Mon Jul 24 16:27:46 2023
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex-M
@@ -83,7 +83,7 @@ int_T main(int_T argc, const char *argv[])
   rtObj.initialize();
 
   // Attach rt_OneStep to a timer or interrupt service routine with
-  //  period 0.2 seconds (base rate of the model) here.
+  //  period 0.001 seconds (base rate of the model) here.
   //  The call syntax for rt_OneStep is
   //
   //   rt_OneStep();

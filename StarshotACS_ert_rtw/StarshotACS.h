@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'StarshotACS'.
 //
-// Model version                  : 13.4
+// Model version                  : 13.5
 // Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
-// C/C++ source code generated on : Thu Jul 20 17:59:15 2023
+// C/C++ source code generated on : Mon Jul 24 16:27:46 2023
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex-M
@@ -78,6 +78,17 @@ struct ExtY {
 // Real-time Model Data Structure
 struct tag_RTM {
   const char_T * volatile errorStatus;
+
+  //
+  //  Timing:
+  //  The following substructure contains information regarding
+  //  the timing information for the model.
+
+  struct {
+    struct {
+      uint16_T TID[2];
+    } TaskCounters;
+  } Timing;
 };
 
 extern const ConstB rtConstB;          // constant block i/o
@@ -103,7 +114,11 @@ extern real_T A;                       // Variable: A
                                           //    '<S3>/Saturation1'
                                           //    '<S3>/Saturation2'
                                           //    '<S3>/Saturation6'
-                                          //  Surface Area For magnetorquer
+                                          //  Cross Section Area For magnetorquer
+
+extern real_T Id;                      // Variable: Id
+                                          //  Referenced by: '<S2>/Id inverse'
+                                          //  Id for the Detumble
 
 extern real_T Kd;                      // Variable: Kd
                                           //  Referenced by: '<S3>/Kd Gain'
@@ -112,6 +127,12 @@ extern real_T Kd;                      // Variable: Kd
 extern real_T Kp;                      // Variable: Kp
                                           //  Referenced by: '<S3>/Kp Gain'
                                           //  Kp for the pointing
+
+extern real_T c;                       // Variable: c
+                                          //  Referenced by:
+                                          //    '<S2>/Gain 8'
+                                          //    '<S2>/Kane damping'
+                                          //  c for the Detumble
 
 extern real_T i_max;                   // Variable: i_max
                                           //  Referenced by:
