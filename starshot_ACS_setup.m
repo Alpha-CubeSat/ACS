@@ -11,7 +11,7 @@ R_Earth=6.371e6; %m
 B0=3.12e-5;
 mu_0=4*pi*(10^-7);
 %vc=sqrt(398600/(altitude+R_Earth/1000))*1000; %replaced
-dutyclc = 0.5; % [0,1] the dutycycle of the pointing controller
+dutyclc = 1; % [0,1] the dutycycle of the pointing controller
 dutyT = 9*60; %sec the period of the pointing controller dutyclc
 
 

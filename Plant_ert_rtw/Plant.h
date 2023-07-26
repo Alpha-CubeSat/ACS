@@ -9,7 +9,7 @@
 //
 // Model version                  : 13.5
 // Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
-// C/C++ source code generated on : Wed Jul 26 15:15:17 2023
+// C/C++ source code generated on : Wed Jul 26 17:41:01 2023
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex-M
@@ -77,17 +77,6 @@ struct ExtY {
 // Real-time Model Data Structure
 struct tag_RTM {
   const char_T * volatile errorStatus;
-
-  //
-  //  Timing:
-  //  The following substructure contains information regarding
-  //  the timing information for the model.
-
-  struct {
-    struct {
-      uint16_T TID[2];
-    } TaskCounters;
-  } Timing;
 };
 
 // Constant parameters (default storage)

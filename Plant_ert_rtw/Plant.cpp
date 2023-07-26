@@ -9,7 +9,7 @@
 //
 // Model version                  : 13.5
 // Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
-// C/C++ source code generated on : Wed Jul 26 15:15:17 2023
+// C/C++ source code generated on : Wed Jul 26 17:41:01 2023
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex-M
@@ -71,7 +71,6 @@ real_T wz = 1.0;                       // Variable: wz
 
 extern real_T rt_atan2d_snf(real_T u0, real_T u1);
 extern void rt_invd3x3_snf(const real_T u[9], real_T y[9]);
-static void rate_scheduler(RT_MODEL *const rtM);
 
 //===========*
 //  Constants *
@@ -308,23 +307,6 @@ extern "C"
     IEEESingle minfF;
     minfF.wordL.wordLuint = 0xFF800000U;
     return minfF.wordL.wordLreal;
-  }
-}
-
-//
-//         This function updates active task flag for each subrate.
-//         The function is called at model base rate, hence the
-//         generated code self-manages all its subrates.
-//
-static void rate_scheduler(RT_MODEL *const rtM)
-{
-  // Compute which subrates run during the next base time step.  Subrates
-  //  are an integer multiple of the base rate counter.  Therefore, the subtask
-  //  counter is reset when it reaches its limit (zero means run).
-
-  (rtM->Timing.TaskCounters.TID[1])++;
-  if ((rtM->Timing.TaskCounters.TID[1]) > 199) {// Sample time: [0.2s, 0.0s]
-    rtM->Timing.TaskCounters.TID[1] = 0;
   }
 }
 
@@ -942,7 +924,6 @@ void Plant::step()
   rtY.pt_error = 57.295779513082323 * std::acos(acc);
 
   // End of Outputs for SubSystem: '<Root>/Plant'
-  rate_scheduler((&rtM));
 }
 
 // Model initialize function
