@@ -65,7 +65,11 @@ target_include_directories(Plant PRIVATE ${START_DIR}
     ${MATLAB_ROOT}/simulink/include
     ${MATLAB_ROOT}/rtw/c/src
     ${MATLAB_ROOT}/rtw/c/src/ext_mode/common
-    ${MATLAB_ROOT}/rtw/c/ert)
+    ${MATLAB_ROOT}/rtw/c/ert
+    ${MATLAB_ROOT}/toolbox/dsp/include
+    ${MATLAB_ROOT}/toolbox/dsp/extern/src/export/include/src
+    ${MATLAB_ROOT}/toolbox/dsp/extern/src/export/include
+    ${MATLAB_ROOT}/toolbox/shared/dsp/vision/matlab/include)
 target_link_libraries(Plant PRIVATE $<$<BOOL:${FOUND_LIBM}>:m>)
 if(WIN32)
    target_link_libraries(Plant PRIVATE kernel32

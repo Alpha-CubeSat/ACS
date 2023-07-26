@@ -9,7 +9,7 @@
 //
 // Model version                  : 13.5
 // Simulink Coder version         : 9.9 (R2023a) 19-Nov-2022
-// C/C++ source code generated on : Mon Jul 24 16:55:43 2023
+// C/C++ source code generated on : Wed Jul 26 15:15:17 2023
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex-M
@@ -28,9 +28,9 @@
 // Exported block parameters
 real_T Altitude = 400.0;               // Variable: Alt
                                           //  Referenced by:
-                                          //    '<S6>/Discrete-Time Integrator1'
-                                          //    '<S6>/Discrete-Time Integrator3'
-                                          //    '<S6>/Discrete-Time Integrator4'
+                                          //    '<S7>/Discrete-Time Integrator1'
+                                          //    '<S7>/Discrete-Time Integrator3'
+                                          //    '<S7>/Discrete-Time Integrator4'
                                           //  Cubesat Altitude (km)
 
 real_T I[9] = { 0.00195761450869, -5.836632382E-5, 2.27638093E-6,
@@ -43,17 +43,17 @@ real_T I[9] = { 0.00195761450869, -5.836632382E-5, 2.27638093E-6,
 
 real_T inclination = 0.90058989402907408;// Variable: inclination
                                             //  Referenced by:
-                                            //    '<S6>/Discrete-Time Integrator1'
-                                            //    '<S6>/Discrete-Time Integrator3'
+                                            //    '<S7>/Discrete-Time Integrator1'
+                                            //    '<S7>/Discrete-Time Integrator3'
                                             //  ISS inclination
 
 real_T m = 1.3;                        // Variable: m
-                                          //  Referenced by: '<S6>/mass gain'
+                                          //  Referenced by: '<S7>/mass gain'
                                           //  Cubesat Mass
 
 real_T q0[4] = { 0.49999999999999994, 0.5, -0.18301270189221924,
   0.6830127018922193 } ;               // Variable: q0
-                                          //  Referenced by: '<S5>/Discrete-Time Integrator1'
+                                          //  Referenced by: '<S6>/Discrete-Time Integrator1'
                                           //  Init Quat (Default Euler Angle = pi/6*[1 2 3])
 
 
@@ -340,35 +340,35 @@ void Plant::qtoQ(const real_T rtu_q[4], real_T rty_Q[9])
   real_T rtb_Sum1;
   real_T rtu_q_1;
 
-  // Product: '<S7>/qTq' incorporates:
-  //   Math: '<S7>/T2'
+  // Product: '<S8>/qTq' incorporates:
+  //   Math: '<S8>/T2'
 
   rtu_q_1 = 0.0;
   for (int32_T i = 0; i < 3; i++) {
-    // Math: '<S7>/T2'
+    // Math: '<S8>/T2'
     rtb_Sum1 = rtu_q[i];
     rtu_q_1 += rtb_Sum1 * rtb_Sum1;
 
-    // Product: '<S7>/qqT' incorporates:
-    //   Math: '<S7>/T1'
-    //   Math: '<S7>/T2'
+    // Product: '<S8>/qqT' incorporates:
+    //   Math: '<S8>/T1'
+    //   Math: '<S8>/T2'
 
     rtu_q_0[3 * i] = rtu_q[0] * rtu_q[i];
     rtu_q_0[3 * i + 1] = rtu_q[1] * rtu_q[i];
     rtu_q_0[3 * i + 2] = rtu_q[2] * rtu_q[i];
   }
 
-  // Sum: '<S7>/Sum1' incorporates:
-  //   Product: '<S7>/Product1'
-  //   Product: '<S7>/qTq'
+  // Sum: '<S8>/Sum1' incorporates:
+  //   Product: '<S8>/Product1'
+  //   Product: '<S8>/qTq'
 
   rtb_Sum1 = rtu_q[3] * rtu_q[3] - rtu_q_1;
 
-  // Reshape: '<S15>/3x3' incorporates:
-  //   Constant: '<S15>/diag 0 '
-  //   Gain: '<S15>/Gain'
-  //   Gain: '<S15>/Gain1'
-  //   Gain: '<S15>/Gain2'
+  // Reshape: '<S16>/3x3' incorporates:
+  //   Constant: '<S16>/diag 0 '
+  //   Gain: '<S16>/Gain'
+  //   Gain: '<S16>/Gain1'
+  //   Gain: '<S16>/Gain2'
 
   tmp[0] = 0.0;
   tmp[1] = rtu_q[2];
@@ -380,21 +380,21 @@ void Plant::qtoQ(const real_T rtu_q[4], real_T rty_Q[9])
   tmp[7] = -rtu_q[0];
   tmp[8] = 0.0;
 
-  // Product: '<S7>/Product'
+  // Product: '<S8>/Product'
   rtu_q_1 = rtu_q[3];
 
-  // Sum: '<S7>/Sum8' incorporates:
-  //   Gain: '<S7>/Gain1'
-  //   Gain: '<S7>/Gain2'
-  //   Gain: '<S7>/Matrix Gain'
-  //   Product: '<S7>/Product'
+  // Sum: '<S8>/Sum8' incorporates:
+  //   Gain: '<S8>/Gain1'
+  //   Gain: '<S8>/Gain2'
+  //   Gain: '<S8>/Matrix Gain'
+  //   Product: '<S8>/Product'
 
   for (int32_T i = 0; i < 9; i++) {
     rty_Q[i] = (2.0 * rtu_q_0[i] - tmp[i] * rtu_q_1 * 2.0) + rtConstP.pooled6[i]
       * rtb_Sum1;
   }
 
-  // End of Sum: '<S7>/Sum8'
+  // End of Sum: '<S8>/Sum8'
 }
 
 real_T rt_atan2d_snf(real_T u0, real_T u1)
@@ -517,19 +517,20 @@ void Plant::step()
   real_T rtb_Sum8[9];
   real_T rtb_Elementproduct[6];
   real_T rtb_Product[4];
+  real_T rtb_Normalization[3];
   real_T rtb_Product_j[3];
   real_T rtb_Sum[3];
-  real_T localProduct;
+  real_T acc;
   real_T rtb_DiscreteTimeIntegrator1;
   real_T rtb_DiscreteTimeIntegrator2;
   real_T rtb_DiscreteTimeIntegrator3;
   real_T rtb_Product_n;
   real_T rtb_Product_p_tmp;
-  real_T rtb_TmpSignalConversionAtMatr_0;
   real_T rtb_qd2;
   real_T rtb_qd3;
   real_T rtb_qd4;
   int32_T i;
+  int32_T k;
 
   // Outputs for Atomic SubSystem: '<Root>/Plant'
   // Gain: '<S1>/Gain' incorporates:
@@ -549,53 +550,53 @@ void Plant::step()
   rtY.angularvelocity[2] = rtDW.DiscreteTimeIntegrator2_DSTATE;
 
   // Outputs for Atomic SubSystem: '<S1>/Quaternion Integration'
-  // DotProduct: '<S13>/Dot Product' incorporates:
-  //   DiscreteIntegrator: '<S5>/Discrete-Time Integrator1'
+  // DotProduct: '<S14>/Dot Product' incorporates:
+  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator1'
 
-  rtb_TmpSignalConversionAtMatr_0 = ((rtDW.DiscreteTimeIntegrator1_DSTAT_m[0] *
-    rtDW.DiscreteTimeIntegrator1_DSTAT_m[0] +
-    rtDW.DiscreteTimeIntegrator1_DSTAT_m[1] *
-    rtDW.DiscreteTimeIntegrator1_DSTAT_m[1]) +
-    rtDW.DiscreteTimeIntegrator1_DSTAT_m[2] *
-    rtDW.DiscreteTimeIntegrator1_DSTAT_m[2]) +
+  acc = ((rtDW.DiscreteTimeIntegrator1_DSTAT_m[0] *
+          rtDW.DiscreteTimeIntegrator1_DSTAT_m[0] +
+          rtDW.DiscreteTimeIntegrator1_DSTAT_m[1] *
+          rtDW.DiscreteTimeIntegrator1_DSTAT_m[1]) +
+         rtDW.DiscreteTimeIntegrator1_DSTAT_m[2] *
+         rtDW.DiscreteTimeIntegrator1_DSTAT_m[2]) +
     rtDW.DiscreteTimeIntegrator1_DSTAT_m[3] *
     rtDW.DiscreteTimeIntegrator1_DSTAT_m[3];
 
-  // Math: '<S13>/Math Function' incorporates:
-  //   DotProduct: '<S13>/Dot Product'
+  // Math: '<S14>/Math Function' incorporates:
+  //   DotProduct: '<S14>/Dot Product'
   //
-  //  About '<S13>/Math Function':
+  //  About '<S14>/Math Function':
   //   Operator: sqrt
 
-  if (rtb_TmpSignalConversionAtMatr_0 < 0.0) {
-    rtb_Product_n = -std::sqrt(std::abs(rtb_TmpSignalConversionAtMatr_0));
+  if (acc < 0.0) {
+    rtb_Product_n = -std::sqrt(std::abs(acc));
   } else {
-    rtb_Product_n = std::sqrt(rtb_TmpSignalConversionAtMatr_0);
+    rtb_Product_n = std::sqrt(acc);
   }
 
-  // End of Math: '<S13>/Math Function'
+  // End of Math: '<S14>/Math Function'
 
-  // Product: '<S13>/Product' incorporates:
-  //   DiscreteIntegrator: '<S5>/Discrete-Time Integrator1'
+  // Product: '<S14>/Product' incorporates:
+  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator1'
 
   rtb_Product[0] = rtDW.DiscreteTimeIntegrator1_DSTAT_m[0] / rtb_Product_n;
   rtb_Product[1] = rtDW.DiscreteTimeIntegrator1_DSTAT_m[1] / rtb_Product_n;
   rtb_Product[2] = rtDW.DiscreteTimeIntegrator1_DSTAT_m[2] / rtb_Product_n;
   rtb_Product[3] = rtDW.DiscreteTimeIntegrator1_DSTAT_m[3] / rtb_Product_n;
 
-  // Update for DiscreteIntegrator: '<S5>/Discrete-Time Integrator1' incorporates:
+  // Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator1' incorporates:
   //   DiscreteIntegrator: '<S1>/Discrete-Time Integrator'
   //   DiscreteIntegrator: '<S1>/Discrete-Time Integrator1'
   //   DiscreteIntegrator: '<S1>/Discrete-Time Integrator2'
-  //   Fcn: '<S14>/qd1'
-  //   Fcn: '<S14>/qd2'
-  //   Fcn: '<S14>/qd3'
-  //   Fcn: '<S14>/qd4'
+  //   Fcn: '<S15>/qd1'
+  //   Fcn: '<S15>/qd2'
+  //   Fcn: '<S15>/qd3'
+  //   Fcn: '<S15>/qd4'
 
   rtb_Product_n = rtDW.DiscreteTimeIntegrator1_DSTAT_m[0];
   rtb_qd2 = rtDW.DiscreteTimeIntegrator1_DSTAT_m[1];
   rtb_qd3 = rtDW.DiscreteTimeIntegrator1_DSTAT_m[2];
-  rtb_qd4 = rtDW.DiscreteTimeIntegrator1_DSTAT_m[3];
+  acc = rtDW.DiscreteTimeIntegrator1_DSTAT_m[3];
   rtDW.DiscreteTimeIntegrator1_DSTAT_m[0] = ((rtb_Product[3] *
     rtDW.DiscreteTimeIntegrator_DSTATE - rtb_Product[2] *
     rtDW.DiscreteTimeIntegrator1_DSTATE) + rtb_Product[1] *
@@ -611,7 +612,7 @@ void Plant::step()
   rtDW.DiscreteTimeIntegrator1_DSTAT_m[3] = ((-rtb_Product[0] *
     rtDW.DiscreteTimeIntegrator_DSTATE - rtb_Product[1] *
     rtDW.DiscreteTimeIntegrator1_DSTATE) - rtb_Product[2] *
-    rtDW.DiscreteTimeIntegrator2_DSTATE) / 2.0 * 0.001 + rtb_qd4;
+    rtDW.DiscreteTimeIntegrator2_DSTATE) / 2.0 * 0.001 + acc;
 
   // End of Outputs for SubSystem: '<S1>/Quaternion Integration'
 
@@ -621,32 +622,32 @@ void Plant::step()
   // End of Outputs for SubSystem: '<S1>/qtoQ1'
 
   // Outputs for Atomic SubSystem: '<S1>/Tranlational Dynamics'
-  // DiscreteIntegrator: '<S6>/Discrete-Time Integrator1'
+  // DiscreteIntegrator: '<S7>/Discrete-Time Integrator1'
   rtb_DiscreteTimeIntegrator1 = rtDW.DiscreteTimeIntegrator1_DSTAT_l;
 
-  // DiscreteIntegrator: '<S6>/Discrete-Time Integrator2'
+  // DiscreteIntegrator: '<S7>/Discrete-Time Integrator2'
   rtb_DiscreteTimeIntegrator2 = rtDW.DiscreteTimeIntegrator2_DSTAT_e;
 
-  // DiscreteIntegrator: '<S6>/Discrete-Time Integrator3'
+  // DiscreteIntegrator: '<S7>/Discrete-Time Integrator3'
   rtb_DiscreteTimeIntegrator3 = rtDW.DiscreteTimeIntegrator3_DSTATE;
 
-  // DiscreteIntegrator: '<S6>/Discrete-Time Integrator4'
+  // DiscreteIntegrator: '<S7>/Discrete-Time Integrator4'
   rtb_Product_n = rtDW.DiscreteTimeIntegrator4_DSTATE;
 
-  // DiscreteIntegrator: '<S6>/Discrete-Time Integrator5'
+  // DiscreteIntegrator: '<S7>/Discrete-Time Integrator5'
   rtb_qd2 = rtDW.DiscreteTimeIntegrator5_DSTATE;
 
-  // DiscreteIntegrator: '<S6>/Discrete-Time Integrator6'
+  // DiscreteIntegrator: '<S7>/Discrete-Time Integrator6'
   rtb_qd3 = rtDW.DiscreteTimeIntegrator6_DSTATE;
 
-  // Sqrt: '<S6>/Sqrt' incorporates:
-  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator4'
-  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator5'
-  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator6'
-  //   DotProduct: '<S6>/Dot Product'
-  //   DotProduct: '<S6>/Dot Product1'
-  //   DotProduct: '<S6>/Dot Product2'
-  //   Sum: '<S6>/Sum'
+  // Sqrt: '<S7>/Sqrt' incorporates:
+  //   DiscreteIntegrator: '<S7>/Discrete-Time Integrator4'
+  //   DiscreteIntegrator: '<S7>/Discrete-Time Integrator5'
+  //   DiscreteIntegrator: '<S7>/Discrete-Time Integrator6'
+  //   DotProduct: '<S7>/Dot Product'
+  //   DotProduct: '<S7>/Dot Product1'
+  //   DotProduct: '<S7>/Dot Product2'
+  //   Sum: '<S7>/Sum'
 
   rtb_qd4 = std::sqrt((rtDW.DiscreteTimeIntegrator4_DSTATE *
                        rtDW.DiscreteTimeIntegrator4_DSTATE +
@@ -655,49 +656,45 @@ void Plant::step()
                       rtDW.DiscreteTimeIntegrator6_DSTATE *
                       rtDW.DiscreteTimeIntegrator6_DSTATE);
 
-  // Product: '<S6>/Divide' incorporates:
-  //   Constant: '<S6>/Constant'
-  //   Gain: '<S6>/Gain1'
-  //   Gain: '<S6>/mass gain'
-  //   Math: '<S6>/Math Function'
+  // Product: '<S7>/Divide' incorporates:
+  //   Constant: '<S7>/Constant'
+  //   Gain: '<S7>/Gain1'
+  //   Gain: '<S7>/mass gain'
+  //   Math: '<S7>/Math Function'
 
-  rtb_TmpSignalConversionAtMatr_0 = 1.0 / (rtb_qd4 * rtb_qd4) * (m *
-    -3.983324E+14);
+  acc = 1.0 / (rtb_qd4 * rtb_qd4) * (m * -3.983324E+14);
 
-  // Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator1' incorporates:
-  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator5'
-  //   DotProduct: '<S6>/Dot Product4'
-  //   Product: '<S6>/Divide1'
+  // Update for DiscreteIntegrator: '<S7>/Discrete-Time Integrator1' incorporates:
+  //   DiscreteIntegrator: '<S7>/Discrete-Time Integrator5'
+  //   DotProduct: '<S7>/Dot Product4'
+  //   Product: '<S7>/Divide1'
 
   rtDW.DiscreteTimeIntegrator1_DSTAT_l += 1.0 / rtb_qd4 *
-    rtDW.DiscreteTimeIntegrator5_DSTATE * rtb_TmpSignalConversionAtMatr_0 *
-    0.001;
+    rtDW.DiscreteTimeIntegrator5_DSTATE * acc * 0.001;
 
-  // Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator2' incorporates:
-  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator4'
-  //   DotProduct: '<S6>/Dot Product5'
-  //   Product: '<S6>/Divide1'
+  // Update for DiscreteIntegrator: '<S7>/Discrete-Time Integrator2' incorporates:
+  //   DiscreteIntegrator: '<S7>/Discrete-Time Integrator4'
+  //   DotProduct: '<S7>/Dot Product5'
+  //   Product: '<S7>/Divide1'
 
   rtDW.DiscreteTimeIntegrator2_DSTAT_e += 1.0 / rtb_qd4 *
-    rtDW.DiscreteTimeIntegrator4_DSTATE * rtb_TmpSignalConversionAtMatr_0 *
-    0.001;
+    rtDW.DiscreteTimeIntegrator4_DSTATE * acc * 0.001;
 
-  // Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator3' incorporates:
-  //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator6'
-  //   DotProduct: '<S6>/Dot Product3'
-  //   Product: '<S6>/Divide1'
+  // Update for DiscreteIntegrator: '<S7>/Discrete-Time Integrator3' incorporates:
+  //   DiscreteIntegrator: '<S7>/Discrete-Time Integrator6'
+  //   DotProduct: '<S7>/Dot Product3'
+  //   Product: '<S7>/Divide1'
 
   rtDW.DiscreteTimeIntegrator3_DSTATE += 1.0 / rtb_qd4 *
-    rtDW.DiscreteTimeIntegrator6_DSTATE * rtb_TmpSignalConversionAtMatr_0 *
-    0.001;
+    rtDW.DiscreteTimeIntegrator6_DSTATE * acc * 0.001;
 
-  // Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator4'
+  // Update for DiscreteIntegrator: '<S7>/Discrete-Time Integrator4'
   rtDW.DiscreteTimeIntegrator4_DSTATE += 0.001 * rtb_DiscreteTimeIntegrator2;
 
-  // Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator5'
+  // Update for DiscreteIntegrator: '<S7>/Discrete-Time Integrator5'
   rtDW.DiscreteTimeIntegrator5_DSTATE += 0.001 * rtb_DiscreteTimeIntegrator1;
 
-  // Update for DiscreteIntegrator: '<S6>/Discrete-Time Integrator6'
+  // Update for DiscreteIntegrator: '<S7>/Discrete-Time Integrator6'
   rtDW.DiscreteTimeIntegrator6_DSTATE += 0.001 * rtb_DiscreteTimeIntegrator3;
 
   // End of Outputs for SubSystem: '<S1>/Tranlational Dynamics'
@@ -708,7 +705,8 @@ void Plant::step()
   //   Math: '<S4>/Math Function6'
   //   Sum: '<S4>/Sum3'
 
-  rtb_qd4 = rtb_Product_n * rtb_Product_n + rtb_qd2 * rtb_qd2;
+  rtb_DiscreteTimeIntegrator1 = rtb_Product_n * rtb_Product_n + rtb_qd2 *
+    rtb_qd2;
 
   // Product: '<S4>/Divide2' incorporates:
   //   Constant: '<S4>/Constant1'
@@ -716,74 +714,70 @@ void Plant::step()
   //   Sqrt: '<S4>/Sqrt3'
   //   Sum: '<S4>/Sum4'
 
-  rtb_TmpSignalConversionAtMatr_0 = 6.371E+6 / std::sqrt(rtb_qd3 * rtb_qd3 +
-    rtb_qd4);
+  acc = 6.371E+6 / std::sqrt(rtb_qd3 * rtb_qd3 + rtb_DiscreteTimeIntegrator1);
 
   // Gain: '<S4>/Gain4' incorporates:
   //   Math: '<S4>/Math Function8'
   //   Product: '<S4>/Product'
 
-  rtb_TmpSignalConversionAtMatr_0 = rtb_TmpSignalConversionAtMatr_0 *
-    rtb_TmpSignalConversionAtMatr_0 * rtb_TmpSignalConversionAtMatr_0 * -3.12E-5;
+  acc = acc * acc * acc * -3.12E-5;
 
   // Sum: '<S4>/Sum5' incorporates:
   //   Constant: '<S4>/Constant8'
   //   Sqrt: '<S4>/Sqrt2'
   //   Trigonometry: '<S4>/Trigonometric Function3'
 
-  localProduct = 1.5707963267948966 - rt_atan2d_snf(rtb_qd3, std::sqrt(rtb_qd4));
+  rtb_qd4 = 1.5707963267948966 - rt_atan2d_snf(rtb_qd3, std::sqrt
+    (rtb_DiscreteTimeIntegrator1));
 
   // Product: '<S4>/Divide3' incorporates:
   //   Gain: '<S4>/Gain5'
   //   Trigonometry: '<S4>/Trigonometric Function2'
 
-  rtb_DiscreteTimeIntegrator1 = 2.0 * rtb_TmpSignalConversionAtMatr_0 * std::cos
-    (localProduct);
+  rtb_DiscreteTimeIntegrator1 = 2.0 * acc * std::cos(rtb_qd4);
 
   // Product: '<S4>/Divide4' incorporates:
   //   Trigonometry: '<S4>/Trigonometric Function4'
 
-  rtb_DiscreteTimeIntegrator2 = rtb_TmpSignalConversionAtMatr_0 * std::sin
-    (localProduct);
+  rtb_DiscreteTimeIntegrator2 = acc * std::sin(rtb_qd4);
 
   // Outputs for Atomic SubSystem: '<S4>/Dipole->ECI'
-  // Trigonometry: '<S12>/Trigonometric Function8' incorporates:
+  // Trigonometry: '<S13>/Trigonometric Function8' incorporates:
   //   Gain: '<S4>/Gain6'
-  //   Trigonometry: '<S12>/Trigonometric Function5'
+  //   Trigonometry: '<S13>/Trigonometric Function5'
 
-  rtb_DiscreteTimeIntegrator3 = std::cos(-localProduct);
+  rtb_DiscreteTimeIntegrator3 = std::cos(-rtb_qd4);
 
-  // Trigonometry: '<S12>/Trigonometric Function7' incorporates:
+  // Trigonometry: '<S13>/Trigonometric Function7' incorporates:
   //   Gain: '<S4>/Gain6'
-  //   Trigonometry: '<S12>/Trigonometric Function6'
+  //   Trigonometry: '<S13>/Trigonometric Function6'
 
-  rtb_Product_p_tmp = std::sin(-localProduct);
+  rtb_Product_p_tmp = std::sin(-rtb_qd4);
 
-  // Sum: '<S12>/Sum6' incorporates:
-  //   Product: '<S12>/Product3'
-  //   Product: '<S12>/Product4'
-  //   Trigonometry: '<S12>/Trigonometric Function7'
-  //   Trigonometry: '<S12>/Trigonometric Function8'
+  // Sum: '<S13>/Sum6' incorporates:
+  //   Product: '<S13>/Product3'
+  //   Product: '<S13>/Product4'
+  //   Trigonometry: '<S13>/Trigonometric Function7'
+  //   Trigonometry: '<S13>/Trigonometric Function8'
 
-  rtb_TmpSignalConversionAtMatr_0 = rtb_DiscreteTimeIntegrator3 *
-    rtb_DiscreteTimeIntegrator2 + rtb_Product_p_tmp *
-    rtb_DiscreteTimeIntegrator1;
+  acc = rtb_DiscreteTimeIntegrator3 * rtb_DiscreteTimeIntegrator2 +
+    rtb_Product_p_tmp * rtb_DiscreteTimeIntegrator1;
 
-  // Trigonometry: '<S12>/Trigonometric Function'
-  localProduct = rt_atan2d_snf(rtb_qd2, rtb_Product_n);
+  // Trigonometry: '<S13>/Trigonometric Function'
+  rtb_qd4 = rt_atan2d_snf(rtb_qd2, rtb_Product_n);
 
   // SignalConversion generated from: '<S1>/Matrix Multiply' incorporates:
-  //   Product: '<S12>/Divide'
-  //   Product: '<S12>/Divide1'
-  //   Product: '<S12>/Product1'
-  //   Product: '<S12>/Product2'
-  //   Sum: '<S12>/Sum5'
-  //   Trigonometry: '<S12>/Trigonometric Function1'
-  //   Trigonometry: '<S12>/Trigonometric Function2'
+  //   Product: '<S13>/Divide'
+  //   Product: '<S13>/Divide1'
+  //   Product: '<S13>/Product1'
+  //   Product: '<S13>/Product2'
+  //   Sum: '<S13>/Sum5'
+  //   Trigonometry: '<S13>/Trigonometric Function1'
+  //   Trigonometry: '<S13>/Trigonometric Function2'
 
-  rtb_qd4 = rtb_TmpSignalConversionAtMatr_0 * std::cos(localProduct);
-  rtb_TmpSignalConversionAtMatr_0 *= std::sin(localProduct);
-  rtb_DiscreteTimeIntegrator1 = rtb_DiscreteTimeIntegrator3 *
+  rtb_Normalization[0] = acc * std::cos(rtb_qd4);
+  rtb_Normalization[1] = acc * std::sin(rtb_qd4);
+  rtb_Normalization[2] = rtb_DiscreteTimeIntegrator3 *
     rtb_DiscreteTimeIntegrator1 - rtb_Product_p_tmp *
     rtb_DiscreteTimeIntegrator2;
 
@@ -791,11 +785,15 @@ void Plant::step()
   // End of Outputs for SubSystem: '<S1>/Magnetic Field Model'
 
   // Product: '<S1>/Matrix Multiply1' incorporates:
-  //   Sum: '<S7>/Sum8'
+  //   Sum: '<S8>/Sum8'
 
+  acc = rtb_Normalization[1];
+  rtb_DiscreteTimeIntegrator1 = rtb_Normalization[0];
+  rtb_DiscreteTimeIntegrator2 = rtb_Normalization[2];
   for (i = 0; i < 3; i++) {
-    rtb_Sum[i] = (rtb_Sum8[i + 3] * rtb_TmpSignalConversionAtMatr_0 + rtb_Sum8[i]
-                  * rtb_qd4) + rtb_Sum8[i + 6] * rtb_DiscreteTimeIntegrator1;
+    rtb_Sum[i] = (rtb_Sum8[i + 3] * acc + rtb_Sum8[i] *
+                  rtb_DiscreteTimeIntegrator1) + rtb_Sum8[i + 6] *
+      rtb_DiscreteTimeIntegrator2;
   }
 
   // End of Product: '<S1>/Matrix Multiply1'
@@ -824,23 +822,23 @@ void Plant::step()
       rtDW.DiscreteTimeIntegrator2_DSTATE;
   }
 
-  // Assertion: '<S10>/Assertion' incorporates:
+  // Assertion: '<S11>/Assertion' incorporates:
   //   Constant: '<S3>/I^-1'
-  //   Product: '<S11>/Product'
-  //   Product: '<S11>/Product1'
-  //   Product: '<S11>/Product2'
-  //   Product: '<S11>/Product3'
-  //   Product: '<S11>/Product4'
-  //   Product: '<S11>/Product5'
-  //   Sum: '<S11>/Sum'
+  //   Product: '<S12>/Product'
+  //   Product: '<S12>/Product1'
+  //   Product: '<S12>/Product2'
+  //   Product: '<S12>/Product3'
+  //   Product: '<S12>/Product4'
+  //   Product: '<S12>/Product5'
+  //   Sum: '<S12>/Sum'
 
   utAssert(((((I[0] * I[4] * I[8] - I[0] * I[5] * I[7]) - I[1] * I[3] * I[8]) +
              I[2] * I[3] * I[7]) + I[1] * I[5] * I[6]) - I[2] * I[4] * I[6] !=
            0.0);
 
-  // Product: '<S10>/Product' incorporates:
+  // Product: '<S11>/Product' incorporates:
   //   Constant: '<S3>/I^-1'
-  //   Sum: '<S7>/Sum8'
+  //   Sum: '<S8>/Sum8'
 
   rt_invd3x3_snf(I, rtb_Sum8);
 
@@ -848,25 +846,24 @@ void Plant::step()
   //   DiscreteIntegrator: '<S1>/Discrete-Time Integrator'
   //   DiscreteIntegrator: '<S1>/Discrete-Time Integrator1'
   //   DiscreteIntegrator: '<S1>/Discrete-Time Integrator2'
-  //   Product: '<S9>/Element product'
-  //   Sum: '<S9>/Add3'
+  //   Product: '<S10>/Element product'
+  //   Sum: '<S10>/Add3'
 
-  rtb_DiscreteTimeIntegrator2 = rtb_Sum[0] -
-    (rtDW.DiscreteTimeIntegrator1_DSTATE * rtb_Product_j[2] -
-     rtDW.DiscreteTimeIntegrator2_DSTATE * rtb_Product_j[1]);
-  rtb_DiscreteTimeIntegrator3 = rtb_Sum[1] -
+  acc = rtb_Sum[0] - (rtDW.DiscreteTimeIntegrator1_DSTATE * rtb_Product_j[2] -
+                      rtDW.DiscreteTimeIntegrator2_DSTATE * rtb_Product_j[1]);
+  rtb_DiscreteTimeIntegrator1 = rtb_Sum[1] -
     (rtDW.DiscreteTimeIntegrator2_DSTATE * rtb_Product_j[0] -
      rtDW.DiscreteTimeIntegrator_DSTATE * rtb_Product_j[2]);
-  rtb_Product_p_tmp = rtb_Sum[2] - (rtDW.DiscreteTimeIntegrator_DSTATE *
-    rtb_Product_j[1] - rtDW.DiscreteTimeIntegrator1_DSTATE * rtb_Product_j[0]);
+  rtb_DiscreteTimeIntegrator2 = rtb_Sum[2] - (rtDW.DiscreteTimeIntegrator_DSTATE
+    * rtb_Product_j[1] - rtDW.DiscreteTimeIntegrator1_DSTATE * rtb_Product_j[0]);
 
   // Product: '<S3>/Product1' incorporates:
-  //   Sum: '<S7>/Sum8'
+  //   Sum: '<S8>/Sum8'
 
   for (i = 0; i < 3; i++) {
-    rtb_Product_j[i] = (rtb_Sum8[i + 3] * rtb_DiscreteTimeIntegrator3 +
-                        rtb_Sum8[i] * rtb_DiscreteTimeIntegrator2) + rtb_Sum8[i
-      + 6] * rtb_Product_p_tmp;
+    rtb_Product_j[i] = (rtb_Sum8[i + 3] * rtb_DiscreteTimeIntegrator1 +
+                        rtb_Sum8[i] * acc) + rtb_Sum8[i + 6] *
+      rtb_DiscreteTimeIntegrator2;
   }
 
   // End of Product: '<S3>/Product1'
@@ -876,6 +873,28 @@ void Plant::step()
   qtoQ(rtb_Product, rtb_Sum8);
 
   // End of Outputs for SubSystem: '<S1>/qtoQ'
+
+  // S-Function (sdsp2norm2): '<S5>/Normalization'
+  i = 0;
+  acc = 0.0;
+  for (k = 0; k < 3; k++) {
+    // Outport: '<Root>/magnetic field' incorporates:
+    //   Product: '<S1>/Matrix Multiply'
+    //   Sum: '<S8>/Sum8'
+
+    rtY.magneticfield[k] = (rtb_Sum8[k + 3] * rtb_Normalization[1] + rtb_Sum8[k]
+      * rtb_Normalization[0]) + rtb_Sum8[k + 6] * rtb_Normalization[2];
+
+    // S-Function (sdsp2norm2): '<S5>/Normalization'
+    acc += rtb_Normalization[i] * rtb_Normalization[i];
+    i++;
+  }
+
+  // S-Function (sdsp2norm2): '<S5>/Normalization'
+  acc = 1.0 / (std::sqrt(acc) + 1.0E-10);
+  rtb_Normalization[0] *= acc;
+  rtb_Normalization[1] *= acc;
+  rtb_Normalization[2] *= acc;
 
   // Update for DiscreteIntegrator: '<S1>/Discrete-Time Integrator'
   rtDW.DiscreteTimeIntegrator_DSTATE += 0.001 * rtb_Product_j[0];
@@ -888,20 +907,6 @@ void Plant::step()
 
   // End of Outputs for SubSystem: '<Root>/Plant'
 
-  // Outport: '<Root>/magnetic field' incorporates:
-  //   Product: '<S1>/Matrix Multiply'
-  //   Sum: '<S7>/Sum8'
-
-  for (i = 0; i < 3; i++) {
-    // Outputs for Atomic SubSystem: '<Root>/Plant'
-    rtY.magneticfield[i] = (rtb_Sum8[i + 3] * rtb_TmpSignalConversionAtMatr_0 +
-      rtb_Sum8[i] * rtb_qd4) + rtb_Sum8[i + 6] * rtb_DiscreteTimeIntegrator1;
-
-    // End of Outputs for SubSystem: '<Root>/Plant'
-  }
-
-  // End of Outport: '<Root>/magnetic field'
-
   // Outport: '<Root>/xyzposition'
   rtY.xyzposition[0] = rtb_Product_n;
   rtY.xyzposition[1] = rtb_qd2;
@@ -912,6 +917,31 @@ void Plant::step()
   rtY.quaternion[1] = rtb_Product[1];
   rtY.quaternion[2] = rtb_Product[2];
   rtY.quaternion[3] = rtb_Product[3];
+
+  // Outputs for Atomic SubSystem: '<Root>/Plant'
+  // DotProduct: '<S5>/Dot Product' incorporates:
+  //   Constant: '<S5>/Constant'
+
+  acc = (rtb_Normalization[0] * 0.0 + rtb_Normalization[1] * 0.0) +
+    rtb_Normalization[2];
+
+  // Saturate: '<S5>/Saturation3' incorporates:
+  //   DotProduct: '<S5>/Dot Product'
+
+  if (acc > 1.0) {
+    acc = 1.0;
+  } else if (acc < -1.0) {
+    acc = -1.0;
+  }
+
+  // Outport: '<Root>/pt_error' incorporates:
+  //   Gain: '<S5>/Multiply'
+  //   Saturate: '<S5>/Saturation3'
+  //   Trigonometry: '<S5>/Acos'
+
+  rtY.pt_error = 57.295779513082323 * std::acos(acc);
+
+  // End of Outputs for SubSystem: '<Root>/Plant'
   rate_scheduler((&rtM));
 }
 
@@ -937,7 +967,7 @@ void Plant::initialize()
     rtDW.DiscreteTimeIntegrator2_DSTATE = wz;
 
     // SystemInitialize for Atomic SubSystem: '<S1>/Quaternion Integration'
-    // InitializeConditions for DiscreteIntegrator: '<S5>/Discrete-Time Integrator1' 
+    // InitializeConditions for DiscreteIntegrator: '<S6>/Discrete-Time Integrator1' 
     rtDW.DiscreteTimeIntegrator1_DSTAT_m[0] = q0[0];
     rtDW.DiscreteTimeIntegrator1_DSTAT_m[1] = q0[1];
     rtDW.DiscreteTimeIntegrator1_DSTAT_m[2] = q0[2];
@@ -946,19 +976,19 @@ void Plant::initialize()
     // End of SystemInitialize for SubSystem: '<S1>/Quaternion Integration'
 
     // SystemInitialize for Atomic SubSystem: '<S1>/Tranlational Dynamics'
-    // InitializeConditions for DiscreteIntegrator: '<S6>/Discrete-Time Integrator1' incorporates:
-    //   DiscreteIntegrator: '<S6>/Discrete-Time Integrator3'
+    // InitializeConditions for DiscreteIntegrator: '<S7>/Discrete-Time Integrator1' incorporates:
+    //   DiscreteIntegrator: '<S7>/Discrete-Time Integrator3'
 
     DiscreteTimeIntegrator1_DSTAT_l = std::sqrt(398600.0 / (Altitude + 6371.0)) *
       1000.0;
     rtDW.DiscreteTimeIntegrator1_DSTAT_l = DiscreteTimeIntegrator1_DSTAT_l * std::
       cos(inclination);
 
-    // InitializeConditions for DiscreteIntegrator: '<S6>/Discrete-Time Integrator3' 
+    // InitializeConditions for DiscreteIntegrator: '<S7>/Discrete-Time Integrator3' 
     rtDW.DiscreteTimeIntegrator3_DSTATE = DiscreteTimeIntegrator1_DSTAT_l * std::
       tan(inclination) * std::sin(inclination);
 
-    // InitializeConditions for DiscreteIntegrator: '<S6>/Discrete-Time Integrator4' 
+    // InitializeConditions for DiscreteIntegrator: '<S7>/Discrete-Time Integrator4' 
     rtDW.DiscreteTimeIntegrator4_DSTATE = Altitude * 1000.0 + 6.371E+6;
 
     // End of SystemInitialize for SubSystem: '<S1>/Tranlational Dynamics'
