@@ -11,9 +11,11 @@ R_Earth=6.371e6; %m
 B0=3.12e-5;
 mu_0=4*pi*(10^-7);
 %vc=sqrt(398600/(altitude+R_Earth/1000))*1000; %replaced
+
 dutyclc = 1; % [0,1] the dutycycle of the pointing controller
 dutyT = 9*60; %sec the period of the pointing controller dutyclc
 %%%%%%%%%%%%%%%%%%%%%%%%%%EKF%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+dT = 0.2;
 k_noise = 3e-5; % noise switch
 % H (output) Matrix
 H = eye(6);
@@ -302,6 +304,16 @@ q0.CoderInfo.Alias = 'q0';
 q0.Description = "Init Quat (Default Euler Angle = pi/6*[1 2 3])";
 q0.DataType = 'double';
 assignin('base', "q0", q0);
+
+%%%%%%%%%%%%%%%EKF%%%%%%%%%%%%%%%
+%R_n
+R_n = Simulink.Parameter;
+R_n.Value = Rn ;
+R_n.CoderInfo.StorageClass = 'ExportedGlobal';
+R_n.CoderInfo.Alias = 'R_n';
+R_n.Description = "(measurement noise variance) Matrices";
+R_n.DataType = 'double';
+assignin('base', "R_n", R_n);
 
 
 %%%SYSTEM PARAMETER
