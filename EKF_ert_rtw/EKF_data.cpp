@@ -21,7 +21,7 @@
 #include "EKF.h"
 
 // Constant parameters (default storage)
-const ConstP rtConstP = {
+const ConstPekf rtConstPekf = {
   // Expression: Hd
   //  Referenced by: '<S3>/Kalman corrector'
 

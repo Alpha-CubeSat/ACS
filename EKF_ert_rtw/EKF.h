@@ -33,10 +33,10 @@
 #endif
 
 // Forward declaration for rtModel
-typedef struct tag_RTM RT_MODEL;
+typedef struct tag_RTMekf RT_MODELekf;
 
 // Block signals and states (default storage) for system '<Root>'
-struct DW {
+struct DWekf {
   real_T UnitDelayX_DSTATE[6];         // '<S3>/Unit Delay - X'
   real_T UnitDelayP_DSTATE[36];        // '<S3>/Unit Delay - P'
   real_T sol_data[6006];
@@ -44,7 +44,7 @@ struct DW {
 };
 
 // Constant parameters (default storage)
-struct ConstP {
+struct ConstPekf {
   // Expression: Hd
   //  Referenced by: '<S3>/Kalman corrector'
 
@@ -62,24 +62,24 @@ struct ConstP {
 };
 
 // External inputs (root inport signals with default storage)
-struct ExtU {
+struct ExtUekf {
   real_T z[3];                         // '<Root>/raw_w'
   real_T z_a[3];                       // '<Root>/raw_mag'
 };
 
 // External outputs (root outports fed by signals with default storage)
-struct ExtY {
+struct ExtYekf {
   real_T filter_w[3];                  // '<Root>/filter_w'
   real_T filter_mag[3];                // '<Root>/filter_mag'
 };
 
 // Real-time Model Data Structure
-struct tag_RTM {
+struct tag_RTMekf {
   const char_T * volatile errorStatus;
 };
 
 // Constant parameters (default storage)
-extern const ConstP rtConstP;
+extern const ConstPekf rtConstPekf;
 
 //
 //  Exported Global Parameters
@@ -113,32 +113,32 @@ extern "C"
 
 extern "C"
 {
-  extern real_T rtInf;
-  extern real_T rtMinusInf;
-  extern real_T rtNaN;
-  extern real32_T rtInfF;
-  extern real32_T rtMinusInfF;
-  extern real32_T rtNaNF;
+  extern real_T rtInfekf;
+  extern real_T rtMinusInfekf;
+  extern real_T rtNaNekf;
+  extern real32_T rtInfFekf;
+  extern real32_T rtMinusInfFekf;
+  extern real32_T rtNaNFekf;
   static void rt_InitInfAndNaN(size_t realSize);
   static boolean_T rtIsInf(real_T value);
   static boolean_T rtIsInfF(real32_T value);
   static boolean_T rtIsNaN(real_T value);
   static boolean_T rtIsNaNF(real32_T value);
-  struct BigEndianIEEEDouble {
+  struct BigEndianIEEEDoubleekf {
     struct {
       uint32_T wordH;
       uint32_T wordL;
     } words;
   };
 
-  struct LittleEndianIEEEDouble {
+  struct LittleEndianIEEEDoubleekf {
     struct {
       uint32_T wordL;
       uint32_T wordH;
     } words;
   };
 
-  struct IEEESingle {
+  struct IEEESingleekf {
     union {
       real32_T wordLreal;
       uint32_T wordLuint;
@@ -152,13 +152,13 @@ class EKF
   // public data and function members
  public:
   // Real-Time Model get method
-  RT_MODEL * getRTM();
+  RT_MODELekf * getRTM();
 
   // External inputs
-  ExtU rtU;
+  ExtUekf rtU;
 
   // External outputs
-  ExtY rtY;
+  ExtYekf rtY;
 
   // model initialize function
   void initialize();
@@ -175,7 +175,7 @@ class EKF
   // private data and function members
  private:
   // Block states
-  DW rtDW;
+  DWekf rtDW;
 
   // private member function(s) for subsystem '<Root>'
   real_T norm(const real_T x[36]);
@@ -198,7 +198,7 @@ class EKF
   void expm(real_T A[36], real_T F[36]);
 
   // Real-Time Model
-  RT_MODEL rtM;
+  RT_MODELekf rtM;
 };
 
 //-

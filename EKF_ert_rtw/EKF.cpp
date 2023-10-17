@@ -45,12 +45,12 @@ extern real_T rt_hypotd_snf(real_T u0, real_T u1);
 static int32_T div_nde_s32_floor(int32_T numerator, int32_T denominator);
 extern "C"
 {
-  real_T rtInf;
-  real_T rtMinusInf;
-  real_T rtNaN;
-  real32_T rtInfF;
-  real32_T rtMinusInfF;
-  real32_T rtNaNF;
+  real_T rtInfekf;
+  real_T rtMinusInfekf;
+  real_T rtNaNekf;
+  real32_T rtInfFekf;
+  real32_T rtMinusInfFekf;
+  real32_T rtNaNFekf;
 }
 
 extern "C"
@@ -67,7 +67,7 @@ extern "C"
       inf = rtGetInfF();
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoubleekf bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -85,13 +85,13 @@ extern "C"
   //
   static real32_T rtGetInfF(void)
   {
-    IEEESingle infF;
+    IEEESingleekf infF;
     infF.wordL.wordLuint = 0x7F800000U;
     return infF.wordL.wordLreal;
   }
 
   //
-  // Initialize rtMinusInf needed by the generated code.
+  // Initialize rtMinusInfekf needed by the generated code.
   // Inf is initialized as non-signaling. Assumes IEEE.
   //
   static real_T rtGetMinusInf(void)
@@ -102,7 +102,7 @@ extern "C"
       minf = rtGetMinusInfF();
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoubleekf bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -115,12 +115,12 @@ extern "C"
   }
 
   //
-  // Initialize rtMinusInfF needed by the generated code.
+  // Initialize rtMinusInfekfF needed by the generated code.
   // Inf is initialized as non-signaling. Assumes IEEE.
   //
   static real32_T rtGetMinusInfF(void)
   {
-    IEEESingle minfF;
+    IEEESingleekf minfF;
     minfF.wordL.wordLuint = 0xFF800000U;
     return minfF.wordL.wordLreal;
   }
@@ -140,7 +140,7 @@ extern "C"
       nan = rtGetNaNF();
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoubleekf bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -153,12 +153,12 @@ extern "C"
   }
 
   //
-  // Initialize rtNaNF needed by the generated code.
+  // Initialize rtNaNFekf needed by the generated code.
   // NaN is initialized as non-signaling. Assumes IEEE.
   //
   static real32_T rtGetNaNF(void)
   {
-    IEEESingle nanF = { { 0.0F } };
+    IEEESingleekf nanF = { { 0.0F } };
 
     nanF.wordL.wordLuint = 0xFFC00000U;
     return nanF.wordL.wordLreal;
@@ -168,30 +168,30 @@ extern "C"
 extern "C"
 {
   //
-  // Initialize the rtInf, rtMinusInf, and rtNaN needed by the
+  // Initialize the rtInfekf, rtMinusInfekf, and rtNaN needed by the
   // generated code. NaN is initialized as non-signaling. Assumes IEEE.
   //
   static void rt_InitInfAndNaN(size_t realSize)
   {
     (void) (realSize);
-    rtNaN = rtGetNaN();
-    rtNaNF = rtGetNaNF();
-    rtInf = rtGetInf();
-    rtInfF = rtGetInfF();
-    rtMinusInf = rtGetMinusInf();
-    rtMinusInfF = rtGetMinusInfF();
+    rtNaNekf = rtGetNaN();
+    rtNaNFekf = rtGetNaNF();
+    rtInfekf = rtGetInf();
+    rtInfFekf = rtGetInfF();
+    rtMinusInfekf = rtGetMinusInf();
+    rtMinusInfFekf = rtGetMinusInfF();
   }
 
   // Test if value is infinite
   static boolean_T rtIsInf(real_T value)
   {
-    return (boolean_T)((value==rtInf || value==rtMinusInf) ? 1U : 0U);
+    return (boolean_T)((value==rtInfekf || value==rtMinusInfekf) ? 1U : 0U);
   }
 
   // Test if single-precision value is infinite
   static boolean_T rtIsInfF(real32_T value)
   {
-    return (boolean_T)(((value)==rtInfF || (value)==rtMinusInfF) ? 1U : 0U);
+    return (boolean_T)(((value)==rtInfFekf || (value)==rtMinusInfFekf) ? 1U : 0U);
   }
 
   // Test if value is not a number
@@ -203,7 +203,7 @@ extern "C"
       result = rtIsNaNF((real32_T)value);
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoubleekf bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -220,7 +220,7 @@ extern "C"
   // Test if single-precision value is not a number
   static boolean_T rtIsNaNF(real32_T value)
   {
-    IEEESingle tmp;
+    IEEESingleekf tmp;
     tmp.wordL.wordLreal = value;
     return (boolean_T)( (tmp.wordL.wordLuint & 0x7F800000) == 0x7F800000 &&
                        (tmp.wordL.wordLuint & 0x007FFFFF) != 0 );
@@ -237,7 +237,7 @@ real_T rt_powd_snf(real_T u0, real_T u1)
 {
   real_T y;
   if (rtIsNaN(u0) || rtIsNaN(u1)) {
-    y = (rtNaN);
+    y = (rtNaNekf);
   } else {
     real_T tmp;
     real_T tmp_0;
@@ -248,14 +248,14 @@ real_T rt_powd_snf(real_T u0, real_T u1)
         y = 1.0;
       } else if (tmp > 1.0) {
         if (u1 > 0.0) {
-          y = (rtInf);
+          y = (rtInfekf);
         } else {
           y = 0.0;
         }
       } else if (u1 > 0.0) {
         y = 0.0;
       } else {
-        y = (rtInf);
+        y = (rtInfekf);
       }
     } else if (tmp_0 == 0.0) {
       y = 1.0;
@@ -270,7 +270,7 @@ real_T rt_powd_snf(real_T u0, real_T u1)
     } else if ((u1 == 0.5) && (u0 >= 0.0)) {
       y = std::sqrt(u0);
     } else if ((u0 < 0.0) && (u1 > std::floor(u1))) {
-      y = (rtNaN);
+      y = (rtNaNekf);
     } else {
       y = std::pow(u0, u1);
     }
@@ -296,7 +296,7 @@ real_T EKF::norm(const real_T x[36])
     }
 
     if (rtIsNaN(s)) {
-      y = (rtNaN);
+      y = (rtNaNekf);
       exitg1 = true;
     } else {
       if (s > y) {
@@ -362,7 +362,7 @@ void EKF::mpower(const real_T a[36], real_T b, real_T c[36])
 
         if (firstmult) {
           for (b_n = 0; b_n < 36; b_n++) {
-            c[b_n] = (rtNaN);
+            c[b_n] = (rtNaNekf);
           }
         } else {
           std::memset(&c[0], 0, 36U * sizeof(real_T));
@@ -557,7 +557,7 @@ void EKF::mpower(const real_T a[36], real_T b, real_T c[36])
       } while (exitg1 == 0);
     } else {
       for (int32_T b_n = 0; b_n < 36; b_n++) {
-        c[b_n] = (rtNaN);
+        c[b_n] = (rtNaNekf);
       }
     }
   }
@@ -569,7 +569,7 @@ real_T EKF::log2_e(real_T x)
   real_T f;
   int32_T inte;
   if (x == 0.0) {
-    f = (rtMinusInf);
+    f = (rtMinusInfekf);
   } else if ((!rtIsInf(x)) && (!rtIsNaN(x))) {
     real_T t;
     t = std::frexp(x, &inte);
@@ -1041,7 +1041,7 @@ real_T rt_hypotd_snf(real_T u0, real_T u1)
     b /= a;
     y = std::sqrt(b * b + 1.0) * a;
   } else if (rtIsNaN(b)) {
-    y = (rtNaN);
+    y = (rtNaNekf);
   } else {
     y = a * 1.4142135623730951;
   }
@@ -1823,7 +1823,7 @@ void EKF::schur(const real_T A[36], real_T V[36], real_T T[36])
 
   if (!p) {
     for (lastc = 0; lastc < 36; lastc++) {
-      V[lastc] = (rtNaN);
+      V[lastc] = (rtNaNekf);
     }
 
     itau = 2;
@@ -1837,7 +1837,7 @@ void EKF::schur(const real_T A[36], real_T V[36], real_T T[36])
     }
 
     for (lastc = 0; lastc < 36; lastc++) {
-      T[lastc] = (rtNaN);
+      T[lastc] = (rtNaNekf);
     }
   } else {
     std::memcpy(&T[0], &A[0], 36U * sizeof(real_T));
@@ -2058,7 +2058,7 @@ void EKF::expm(real_T A[36], real_T F[36])
 
   if (!recomputeDiags) {
     for (e_i = 0; e_i < 36; e_i++) {
-      F[e_i] = (rtNaN);
+      F[e_i] = (rtNaNekf);
     }
   } else {
     e_j = 0;
@@ -2177,7 +2177,7 @@ void EKF::expm(real_T A[36], real_T F[36])
                 } else {
                   exptj = A[i_0 - 1];
                   if (rtIsNaN(d6)) {
-                    d6 = (rtNaN);
+                    d6 = (rtNaNekf);
                   } else if (d6 < 0.0) {
                     d6 = -1.0;
                   } else {
@@ -2185,7 +2185,7 @@ void EKF::expm(real_T A[36], real_T F[36])
                   }
 
                   if (rtIsNaN(exptj)) {
-                    exptj = (rtNaN);
+                    exptj = (rtNaNekf);
                   } else if (exptj < 0.0) {
                     exptj = -1.0;
                   } else {
@@ -2794,7 +2794,7 @@ void EKF::step()
 
     b_absx = std::abs(f0[next] / num);
     if (rtIsNaN(b_absx)) {
-      rh = (rtNaN);
+      rh = (rtNaNekf);
     } else if (b_absx > rh) {
       rh = b_absx;
     }
@@ -2826,7 +2826,7 @@ void EKF::step()
     exitg1 = 0;
     b_absx = std::abs(rh);
     if (rtIsInf(b_absx) || rtIsNaN(b_absx)) {
-      b_absx = (rtNaN);
+      b_absx = (rtNaNekf);
     } else if (b_absx < 4.4501477170144028E-308) {
       b_absx = 4.94065645841247E-324;
     } else {
@@ -2937,7 +2937,7 @@ void EKF::step()
         if (num > c) {
           c = num;
         } else if (rtIsNaN(num)) {
-          c = (rtNaN);
+          c = (rtNaNekf);
         }
       }
 
@@ -3140,7 +3140,7 @@ void EKF::step()
       }
 
       jj = 6 * Bcolidx + b_iac;
-      rtb_P_k1_k[jj] = rtConstP.Kalmanpredictor_Q[jj] + absh;
+      rtb_P_k1_k[jj] = rtConstPekf.Kalmanpredictor_Q[jj] + absh;
     }
   }
 
@@ -3150,10 +3150,10 @@ void EKF::step()
   for (b_iac = 0; b_iac < 6; b_iac++) {
     for (Bcolidx = 0; Bcolidx < 6; Bcolidx++) {
       jj = 6 * Bcolidx + b_iac;
-      Ad[Bcolidx + 6 * b_iac] = rtConstP.Kalmancorrector_Hd[jj];
+      Ad[Bcolidx + 6 * b_iac] = rtConstPekf.Kalmancorrector_Hd[jj];
       absh = 0.0;
       for (nout = 0; nout < 6; nout++) {
-        absh += rtConstP.Kalmancorrector_Hd[6 * nout + b_iac] * rtb_P_k1_k[6 *
+        absh += rtConstPekf.Kalmancorrector_Hd[6 * nout + b_iac] * rtb_P_k1_k[6 *
           Bcolidx + nout];
       }
 
@@ -3292,7 +3292,7 @@ void EKF::step()
       next = 6 * Bcolidx + b_iac;
       K_k1[next] = rh;
       absh += rtDW.sol_data[(ystage_tmp * Bcolidx + ystage_tmp) - 1] *
-        rtConstP.Kalmancorrector_Hd[next];
+        rtConstPekf.Kalmancorrector_Hd[next];
     }
 
     y[b_iac] = rtb_VectorConcatenate[b_iac] - absh;
@@ -3371,7 +3371,7 @@ void EKF::initialize()
     // SystemInitialize for Atomic SubSystem: '<S1>/EKF'
     // InitializeConditions for UnitDelay: '<S3>/Unit Delay - X'
     for (i = 0; i < 6; i++) {
-      rtDW.UnitDelayX_DSTATE[i] = rtConstP.UnitDelayX_InitialCondition[i];
+      rtDW.UnitDelayX_DSTATE[i] = rtConstPekf.UnitDelayX_InitialCondition[i];
     }
 
     // End of InitializeConditions for UnitDelay: '<S3>/Unit Delay - X'
@@ -3401,7 +3401,7 @@ EKF::~EKF()
 }
 
 // Real-Time Model get method
-RT_MODEL * EKF::getRTM()
+RT_MODELekf * EKF::getRTM()
 {
   return (&rtM);
 }
