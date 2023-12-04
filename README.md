@@ -35,5 +35,5 @@ Plant_OG: a direct migration of Davide's code.
 
 In order to use discrete-time derivatives, we shall use a fix-step setting instead of a variable-step.
 
-Some, if not all, the `StarshotACS` blocks seem to scale Kd in with `Izp`, making the input Kd ~500 times smaller.
+Some, if not all, the `StarshotACS` blocks seem to scale Kp in with `Izp`, making the input Kp ~500 times smaller.
 
