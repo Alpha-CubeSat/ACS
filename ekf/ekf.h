@@ -1,4 +1,4 @@
-#include <ArduinoEigen.h>
+#include <Eigen/Dense>
 #include <vector>
 
 class EKF {

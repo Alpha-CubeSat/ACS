@@ -608,7 +608,7 @@ StarshotACS::~StarshotACS()
 }
 
 // Real-Time Model get method
-RT_MODEL *StarshotACS::getRTM()
+RT_MODELcontroller *StarshotACS::getRTM()
 {
   return (&rtM);
 }

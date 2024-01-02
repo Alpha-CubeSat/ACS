@@ -154,7 +154,7 @@ extern "C"
   static boolean_T rtIsInfF(real32_T value);
   static boolean_T rtIsNaN(real_T value);
   static boolean_T rtIsNaNF(real32_T value);
-  struct BigEndianIEEEDouble
+  struct BigEndianIEEEDoublePlant
   {
     struct
     {
@@ -163,7 +163,7 @@ extern "C"
     } words;
   };
 
-  struct LittleEndianIEEEDouble
+  struct LittleEndianIEEEDoublePlant
   {
     struct
     {
@@ -172,7 +172,7 @@ extern "C"
     } words;
   };
 
-  struct IEEESingle
+  struct IEEESinglePlant
   {
     union
     {

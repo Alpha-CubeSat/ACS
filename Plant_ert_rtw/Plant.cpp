@@ -152,7 +152,7 @@ extern "C"
       nan = rtGetNaNF();
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoublePlant bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -170,7 +170,7 @@ extern "C"
   //
   static real32_T rtGetNaNF(void)
   {
-    IEEESingle nanF = { { 0.0F } };
+    IEEESinglePlant nanF = { { 0.0F } };
 
     nanF.wordL.wordLuint = 0xFFC00000U;
     return nanF.wordL.wordLreal;
@@ -215,7 +215,7 @@ extern "C"
       result = rtIsNaNF((real32_T)value);
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoublePlant bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -232,7 +232,7 @@ extern "C"
   // Test if single-precision value is not a number
   static boolean_T rtIsNaNF(real32_T value)
   {
-    IEEESingle tmp;
+    IEEESinglePlant tmp;
     tmp.wordL.wordLreal = value;
     return (boolean_T)( (tmp.wordL.wordLuint & 0x7F800000) == 0x7F800000 &&
                        (tmp.wordL.wordLuint & 0x007FFFFF) != 0 );
@@ -253,7 +253,7 @@ extern "C"
       inf = rtGetInfF();
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoublePlant bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -271,7 +271,7 @@ extern "C"
   //
   static real32_T rtGetInfF(void)
   {
-    IEEESingle infF;
+    IEEESinglePlant infF;
     infF.wordL.wordLuint = 0x7F800000U;
     return infF.wordL.wordLreal;
   }
@@ -288,7 +288,7 @@ extern "C"
       minf = rtGetMinusInfF();
     } else {
       union {
-        LittleEndianIEEEDouble bitVal;
+        LittleEndianIEEEDoublePlant bitVal;
         real_T fltVal;
       } tmpVal;
 
@@ -306,7 +306,7 @@ extern "C"
   //
   static real32_T rtGetMinusInfF(void)
   {
-    IEEESingle minfF;
+    IEEESinglePlant minfF;
     minfF.wordL.wordLuint = 0xFF800000U;
     return minfF.wordL.wordLreal;
   }

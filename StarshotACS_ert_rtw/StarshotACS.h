@@ -25,30 +25,33 @@
 
 // Macros for accessing real-time model data structure
 #ifndef rtmGetErrorStatus
-#define rtmGetErrorStatus(rtm)         ((rtm)->errorStatus)
+#define rtmGetErrorStatus(rtm) ((rtm)->errorStatus)
 #endif
 
 #ifndef rtmSetErrorStatus
-#define rtmSetErrorStatus(rtm, val)    ((rtm)->errorStatus = (val))
+#define rtmSetErrorStatus(rtm, val) ((rtm)->errorStatus = (val))
 #endif
 
 // Forward declaration for rtModel
-typedef struct tag_RTM RT_MODEL;
+typedef struct tag_RTMcontroller RT_MODELcontroller;
 
 // Block signals and states (default storage) for system '<Root>'
-struct DW {
-  real_T DiscreteTimeIntegrator_DSTATE[3];// '<S2>/Discrete-Time Integrator'
-  real_T UD_DSTATE[3];                 // '<S6>/UD'
-  real_T UD_DSTATE_k;                  // '<S8>/UD'
+struct DWcontroller
+{
+  real_T DiscreteTimeIntegrator_DSTATE[3]; // '<S2>/Discrete-Time Integrator'
+  real_T UD_DSTATE[3];                     // '<S6>/UD'
+  real_T UD_DSTATE_k;                      // '<S8>/UD'
 };
 
 // Invariant block signals (default storage)
-struct ConstB {
-  real_T VectorConcatenate[9];         // '<S11>/Vector Concatenate'
+struct ConstB
+{
+  real_T VectorConcatenate[9]; // '<S11>/Vector Concatenate'
 };
 
 // Constant parameters (default storage)
-struct ConstP {
+struct ConstP
+{
   // Expression: [1 0 0;0 1 0;0 0 1]
   //  Referenced by: '<S2>/Identity matrix'
 
@@ -64,24 +67,27 @@ struct ConstP {
 };
 
 // External inputs (root inport signals with default storage)
-struct ExtU {
-  real_T w[3];                         // '<Root>/angularvelocity'
-  real_T Bfield_body[3];               // '<Root>/Bfield_body'
+struct ExtUcontroller
+{
+  real_T w[3];           // '<Root>/angularvelocity'
+  real_T Bfield_body[3]; // '<Root>/Bfield_body'
 };
 
 // External outputs (root outports fed by signals with default storage)
-struct ExtY {
-  real_T detumble[3];                  // '<Root>/detumble'
-  real_T point[3];                     // '<Root>/point'
-  real_T pt_error;                     // '<Root>/pt_error'
+struct ExtYcontroller
+{
+  real_T detumble[3]; // '<Root>/detumble'
+  real_T point[3];    // '<Root>/point'
+  real_T pt_error;    // '<Root>/pt_error'
 };
 
 // Real-time Model Data Structure
-struct tag_RTM {
-  const char_T * volatile errorStatus;
+struct tag_RTMcontroller
+{
+  const char_T *volatile errorStatus;
 };
 
-extern const ConstB rtConstB;          // constant block i/o
+extern const ConstB rtConstB; // constant block i/o
 
 // Constant parameters (default storage)
 extern const ConstP rtConstP;
@@ -94,90 +100,89 @@ extern const ConstP rtConstP;
 //  these parameters and exports their symbols.
 //
 
-extern real_T A;                       // Variable: A
-                                          //  Referenced by:
-                                          //    '<S2>/Gain'
-                                          //    '<S2>/Saturation1'
-                                          //    '<S2>/Saturation2'
-                                          //    '<S2>/Saturation6'
-                                          //    '<S3>/Gain'
-                                          //    '<S3>/Saturation1'
-                                          //    '<S3>/Saturation2'
-                                          //    '<S3>/Saturation6'
-                                          //  Cross Section Area For magnetorquer
+extern real_T A; // Variable: A
+                 //  Referenced by:
+                 //    '<S2>/Gain'
+                 //    '<S2>/Saturation1'
+                 //    '<S2>/Saturation2'
+                 //    '<S2>/Saturation6'
+                 //    '<S3>/Gain'
+                 //    '<S3>/Saturation1'
+                 //    '<S3>/Saturation2'
+                 //    '<S3>/Saturation6'
+                 //  Cross Section Area For magnetorquer
 
-extern real_T Id;                      // Variable: Id
-                                          //  Referenced by: '<S2>/Id inverse'
-                                          //  Id for the Detumble
+extern real_T Id; // Variable: Id
+                  //  Referenced by: '<S2>/Id inverse'
+                  //  Id for the Detumble
 
-extern real_T Kd;                      // Variable: Kd
-                                          //  Referenced by: '<S3>/Kd Gain'
-                                          //  Kd for the pointing
+extern real_T Kd; // Variable: Kd
+                  //  Referenced by: '<S3>/Kd Gain'
+                  //  Kd for the pointing
 
-extern real_T Kp;                      // Variable: Kp
-                                          //  Referenced by: '<S3>/Kp Gain'
-                                          //  Kp for the pointing
+extern real_T Kp; // Variable: Kp
+                  //  Referenced by: '<S3>/Kp Gain'
+                  //  Kp for the pointing
 
-extern real_T c;                       // Variable: c
-                                          //  Referenced by:
-                                          //    '<S2>/Gain 8'
-                                          //    '<S2>/Kane damping'
-                                          //  c for the Detumble
+extern real_T c; // Variable: c
+                 //  Referenced by:
+                 //    '<S2>/Gain 8'
+                 //    '<S2>/Kane damping'
+                 //  c for the Detumble
 
-extern real_T i_max;                   // Variable: i_max
-                                          //  Referenced by:
-                                          //    '<S2>/Saturation1'
-                                          //    '<S2>/Saturation2'
-                                          //    '<S2>/Saturation6'
-                                          //    '<S3>/Saturation1'
-                                          //    '<S3>/Saturation2'
-                                          //    '<S3>/Saturation6'
-                                          //  Max Current for each magnetorquer
+extern real_T i_max; // Variable: i_max
+                     //  Referenced by:
+                     //    '<S2>/Saturation1'
+                     //    '<S2>/Saturation2'
+                     //    '<S2>/Saturation6'
+                     //    '<S3>/Saturation1'
+                     //    '<S3>/Saturation2'
+                     //    '<S3>/Saturation6'
+                     //  Max Current for each magnetorquer
 
-extern real_T k;                       // Variable: k
-                                          //  Referenced by:
-                                          //    '<S2>/Gain'
-                                          //    '<S2>/Saturation1'
-                                          //    '<S2>/Saturation2'
-                                          //    '<S2>/Saturation6'
-                                          //    '<S3>/Gain'
-                                          //    '<S3>/Saturation1'
-                                          //    '<S3>/Saturation2'
-                                          //    '<S3>/Saturation6'
-                                          //  Gain for magnetorquer
+extern real_T k; // Variable: k
+                 //  Referenced by:
+                 //    '<S2>/Gain'
+                 //    '<S2>/Saturation1'
+                 //    '<S2>/Saturation2'
+                 //    '<S2>/Saturation6'
+                 //    '<S3>/Gain'
+                 //    '<S3>/Saturation1'
+                 //    '<S3>/Saturation2'
+                 //    '<S3>/Saturation6'
+                 //  Gain for magnetorquer
 
-extern real_T n;                       // Variable: n
-                                          //  Referenced by:
-                                          //    '<S2>/Gain'
-                                          //    '<S2>/Saturation1'
-                                          //    '<S2>/Saturation2'
-                                          //    '<S2>/Saturation6'
-                                          //    '<S3>/Gain'
-                                          //    '<S3>/Saturation1'
-                                          //    '<S3>/Saturation2'
-                                          //    '<S3>/Saturation6'
-                                          //  Wire Turn For magnetorquer
-
+extern real_T n; // Variable: n
+                 //  Referenced by:
+                 //    '<S2>/Gain'
+                 //    '<S2>/Saturation1'
+                 //    '<S2>/Saturation2'
+                 //    '<S2>/Saturation6'
+                 //    '<S3>/Gain'
+                 //    '<S3>/Saturation1'
+                 //    '<S3>/Saturation2'
+                 //    '<S3>/Saturation6'
+                 //  Wire Turn For magnetorquer
 
 // Class declaration for model StarshotACS
 class StarshotACS
 {
   // public data and function members
- public:
+public:
   // Real-Time Model get method
-  RT_MODEL * getRTM();
+  RT_MODELcontroller *getRTM();
 
   // External inputs
-  ExtU rtU;
+  ExtUcontroller rtU;
 
   // External outputs
-  ExtY rtY;
+  ExtYcontroller rtY;
 
   // model initialize function
-//   void initialize();
+  //   void initialize();
   void initialize(double step_size_input, double A_input, double Id_input, double Kd_input, double Kp_input, double c_input, double i_max_input, double k_input, double n_input);
 
-      // model step function
+  // model step function
   void step();
 
   // Constructor
@@ -187,12 +192,12 @@ class StarshotACS
   ~StarshotACS();
 
   // private data and function members
- private:
+private:
   // Block states
-  DW rtDW;
+  DWcontroller rtDW;
 
   // Real-Time Model
-  RT_MODEL rtM;
+  RT_MODELcontroller rtM;
 };
 
 //-
@@ -204,7 +209,6 @@ class StarshotACS
 //  Block '<S3>/Scope' : Unused code path elimination
 //  Block '<S3>/Scope1' : Unused code path elimination
 //  Block '<S2>/Gain 1' : Eliminated nontunable gain of 1
-
 
 //-
 //  The generated code includes comments that allow you to trace directly
@@ -240,7 +244,7 @@ class StarshotACS
 //  '<S14>'  : 'starshotsim_dev/StarshotACS/Orientation controller/Subsystem1/Norm4'
 //  '<S15>'  : 'starshotsim_dev/StarshotACS/Orientation controller/Subsystem1/Norm5'
 
-#endif                                 // RTW_HEADER_StarshotACS_h_
+#endif // RTW_HEADER_StarshotACS_h_
 
 //
 // File trailer for generated code.
