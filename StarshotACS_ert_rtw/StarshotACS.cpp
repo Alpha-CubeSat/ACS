@@ -577,7 +577,7 @@ void StarshotACS::initialize(double step_size_input, double A_input, double Id_i
   // InitializeConditions for DiscreteIntegrator: '<S2>/Discrete-Time Integrator'
   rtDW.DiscreteTimeIntegrator_DSTATE[0] = 0.0;
   rtDW.DiscreteTimeIntegrator_DSTATE[1] = 0.0;
-  rtDW.DiscreteTimeIntegrator_DSTATE[2] = 1.0;
+  rtDW.DiscreteTimeIntegrator_DSTATE[2] = 5.0;
   
   step_size = step_size_input;
   A = A_input;
